@@ -35,7 +35,6 @@ namespace SmartNestAPI.Extensions
                             Title = "API",
                             Version = "v1",
                             Description = "A REST API",
-                            TermsOfService = new Uri("/")
                         });
 
                 c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
