@@ -9,7 +9,6 @@ builder.Services.ConfigureBuiltinServices();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -19,7 +18,7 @@ string clientID = MyConfig.GetSection("Authentication:ClientId").Value;
 app.UseSwagger();
 app.UseSwaggerUI(c =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartNest API Documentaion");
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartNest API Documentation");
     c.OAuthClientId(clientID);
 });
 app.UseStatusCodePages();

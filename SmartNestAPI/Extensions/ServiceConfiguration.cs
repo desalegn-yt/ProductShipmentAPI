@@ -18,15 +18,6 @@ namespace SmartNestAPI.Extensions
             string clientID = MyConfig.GetSection("Authentication:ClientId").Value;
             string domain = MyConfig.GetSection("Authentication:Domain").Value;
             string audience = MyConfig.GetSection("Authentication:Audience").Value;
-            services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options =>
-            {
-                options.Authority = domain;
-                options.Audience = audience;
-            });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1",
@@ -48,18 +39,30 @@ namespace SmartNestAPI.Extensions
                         {
                             Scopes = new Dictionary<string, string>
                 {
-                    { "openid", "Open Id" }
+                    { "smart_nest", "Smart Nest" }
                 },
                             AuthorizationUrl = new Uri(domain + "authorize?audience=" + audience)
                         }
                     }
                 });
             });
+
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options =>
+            {
+                options.Authority = domain;
+                options.Audience = audience;
+            });
         }
         public static void ConfigureBuiltinServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
             services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<PostgreSqlContext>();
             services.AddScoped<LogWriter>();
 

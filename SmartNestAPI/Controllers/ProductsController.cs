@@ -9,32 +9,31 @@ using System.Net;
 
 namespace SmartNestAPI.Controllers
 {
-    [Route("api/order")]
+    [Route("api/product")]
     [ApiController]
     [Authorize]
-    public class OrdersController : ControllerBase
+    public class ProductsController : ControllerBase
     {
-        private readonly IOrderService _orderService;
+        private readonly IProductService _productService;
 
-        public OrdersController(IOrderService orderService)
+        public ProductsController(IProductService productService)
         {
-            _orderService = orderService;
+            _productService = productService;
         }
-
         [HttpGet]
-        public IEnumerable<OrderRes> Get()
+        public IEnumerable<ProductRes> Get()
         {
-            return _orderService.GetOrderRecords();
+            return _productService.GetProductRecords();
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] OrderReq order)
+        public IActionResult Create([FromBody] ProductReq product)
         {
             if (ModelState.IsValid)
             {
                 Guid obj = Guid.NewGuid();
-                order.Id = obj;
-                _orderService.AddOrderRecord(order);
+                product.Id = obj;
+                _productService.AddProductRecord(product);
                 return Ok();
             }
             else
@@ -42,18 +41,19 @@ namespace SmartNestAPI.Controllers
                 return BadRequest(ModelState);
             }
         }
+
         [HttpGet("{id}")]
-        public OrderRes Details(Guid id)
+        public ProductRes Details(Guid id)
         {
-            return _orderService.GetOrderSingleRecord(id);
+            return _productService.GetProductSingleRecord(id);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] OrderReq order)
+        public IActionResult Edit([FromBody] ProductReq product)
         {
             if (ModelState.IsValid)
             {
-                _orderService.UpdateOrderRecord(order);
+                _productService.UpdateProductRecord(product);
                 return Ok();
             }
             else
@@ -65,12 +65,12 @@ namespace SmartNestAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(Guid id)
         {
-            var data = _orderService.GetOrderSingleRecord(id);
+            var data = _productService.GetProductSingleRecord(id);
             if (data == null)
             {
                 return NotFound();
             }
-            _orderService.DeleteOrderRecord(id);
+            _productService.DeleteProductRecord(id);
             return Ok();
         }
     }
