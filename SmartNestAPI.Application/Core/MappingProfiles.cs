@@ -18,6 +18,13 @@ namespace SmartNestAPI.Application.Core
             CreateMap<SnOrder, OrderRes>();
             CreateMap<UserReq, SnUser>();
             CreateMap<SnUser, UserRes>();
+            CreateMap<SupplierReq, SnSupplier>();
+            CreateMap<SnSupplier, SupplierRes>();
+            CreateMap<ContainerReq, SnContainer>();
+            CreateMap<SnContainer, ContainerRes>();
+            CreateMap<UserAddressReq, SnUserAddress>();
+            CreateMap<SnUserAddress, UserAddressRes>();
+
         }
     }
 }
