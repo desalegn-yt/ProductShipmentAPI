@@ -7,6 +7,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="dockerfile" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="infra\.terraform\providers\registry.terraform.io\hashicorp\aws\4.49.0\windows_amd64\terraform-provider-aws_v4.49.0_x5.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.10" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.10">
       <PrivateAssets>all</PrivateAssets>
