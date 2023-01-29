@@ -1,0 +1,52 @@
+{
+  "taskDefinitionArn": "arn:aws:ecs:ap-southeast-2:443233915352:task-definition/smartnest_api:13",
+  "containerDefinitions": [
+    {
+      "name": "smartnestapi",
+      "image": "sha256:97bc35e1173ee44d19f58981a9c17a33a69a65dad422cd6e43e1eda744c5bd08",
+      "cpu": 0,
+      "portMappings": [
+        {
+          "containerPort": 80,
+          "hostPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "essential": true,
+      "environment": [],
+      "mountPoints": [],
+      "volumesFrom": []
+    }
+  ],
+  "family": "smartnest_api",
+  "taskRoleArn": "arn:aws:iam::443233915352:role/terraform-20230129003147551200000001",
+  "executionRoleArn": "arn:aws:iam::443233915352:role/terraform-20230129003147551200000001",
+  "networkMode": "awsvpc",
+  "revision": 13,
+  "volumes": [],
+  "status": "ACTIVE",
+  "requiresAttributes": [
+    {
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
+    },
+    {
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+    },
+    {
+      "name": "ecs.capability.task-eni"
+    }
+  ],
+  "placementConstraints": [],
+  "compatibilities": [
+    "EC2",
+    "FARGATE"
+  ],
+  "requiresCompatibilities": [
+    "FARGATE"
+  ],
+  "cpu": "256",
+  "memory": "512",
+  "registeredAt": "2023-01-29T00:31:49.784Z",
+  "registeredBy": "arn:aws:iam::443233915352:user/terraform2",
+  "tags": []
+}

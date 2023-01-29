@@ -35,7 +35,14 @@ resource "aws_iam_role_policy" "task" {
         {
           "Effect" : "Allow",
           "Action" : [
-            "logs:CreateLogGroup"
+              "logs:CreateLogStream",
+              "logs:PutLogEvents",
+              "logs:CreateLogGroup",
+              "ecr:GetAuthorizationToken",
+              "ecr:BatchCheckLayerAvailability",
+              "ecr:GetDownloadUrlForLayer",
+              "ecr:BatchGetImage",
+              "kms:*"
           ],
           "Resource" : "*"
         }
