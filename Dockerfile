@@ -16,4 +16,6 @@ RUN dotnet publish "/SmartNestAPI/SmartNestAPI.csproj" -c Release -o /app/publis
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN apt-get update -y
+RUN apt-get install curl -y
 ENTRYPOINT ["dotnet", "SmartNestAPI.dll"]
