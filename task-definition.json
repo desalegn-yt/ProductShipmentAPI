@@ -29,8 +29,8 @@
         }
     ],
     "family": "smartnest_api",
-    "taskRoleArn": "arn:aws:iam::443233915352:role/terraform-20230129003147551200000001",
-    "executionRoleArn": "arn:aws:iam::443233915352:role/terraform-20230129003147551200000001",
+    "taskRoleArn": "arn:aws:iam::443233915352:role/terraform-20230130204631685800000001",
+    "executionRoleArn": "arn:aws:iam::443233915352:role/terraform-20230130204631685800000001",
     "networkMode": "awsvpc",
     "revision": 17,
     "volumes": [],
