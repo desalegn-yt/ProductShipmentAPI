@@ -18,10 +18,7 @@
             "mountPoints": [],
             "volumesFrom": [],
             "healthCheck": {
-                "command": [
-                    "CMD-SHELL",
-                    " CURL -f http://localhost || exit 1"
-                ],
+                "command":[ "CMD-SHELL", "curl -f http://localhost/ || exit 1" ],
                 "interval": 300,
                 "timeout": 30,
                 "retries": 2
