@@ -15,6 +15,6 @@ namespace SmartNestAPI.Domain.Interfaces
         void UpdateOrderRecord(OrderReq order);
         void DeleteOrderRecord(Guid id);
         OrderRes GetOrderSingleRecord(Guid id);
-        List<OrderRes> GetOrderRecords();
+        List<OrderRes> GetOrderRecords(string clientId);
     }
 }

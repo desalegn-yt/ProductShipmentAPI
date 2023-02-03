@@ -4,6 +4,7 @@ using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
 using SmartNestAPI.Domain.Interfaces;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace SmartNestAPI.Application.Services
 {
@@ -46,18 +47,18 @@ namespace SmartNestAPI.Application.Services
                 _logWriter.WriteLog("Error occured while deleting user. Error:- " + ex.Message);
             }
         }
-
-        public List<UserRes> GetUserRecords()
+        public UserRes GetUserRecord(string clientId)
         {
             try
             {
-                return _mapper.Map<List<UserRes>>(_context.SnUsers.ToList());
+                var result = _context.SnUsers.FirstOrDefault(a => a.AuthId == clientId);
+                return _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(a=>a.AuthId== clientId));
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while retrieving users. Error:- " + ex.Message);
             }
-            return new List<UserRes>();
+            return new UserRes();
         }
 
         public UserRes GetUserSingleRecord(Guid id)
@@ -77,7 +78,7 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                _context.SnUsers.Update(_mapper.Map<SnUser>(user));
+                _context.Update(_mapper.Map<SnUser>(user));
                 _context.SaveChanges();
             }
             catch (Exception ex)

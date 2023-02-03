@@ -47,11 +47,12 @@ namespace SmartNestAPI.Application.Services
             }
         }
 
-        public List<OrderRes> GetOrderRecords()
+        public List<OrderRes> GetOrderRecords(string clientId)
         {
             try
             {
-                return _mapper.Map<List<OrderRes>>(_context.SnOrders.ToList());
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientId).Select(a => a.Id).FirstOrDefault();
+                return _mapper.Map<List<OrderRes>>(_context.SnOrders.Where(u=>u.UserId==userId).ToList());
             }
             catch (Exception ex)
             {
@@ -77,7 +78,7 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                _context.SnOrders.Update(_mapper.Map<SnOrder>(order));
+                _context.Update(_mapper.Map<SnOrder>(order));
                 _context.SaveChanges();
             }
             catch (Exception ex)

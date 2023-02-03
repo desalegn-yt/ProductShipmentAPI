@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
@@ -23,7 +24,8 @@ namespace SmartNestAPI.Controllers
         [HttpGet]
         public IEnumerable<UserContainerRes> Get()
         {
-            return _UserContainerService.GetUserContainerRecords();
+            var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+            return _UserContainerService.GetUserContainerRecords(clientID);
         }
 
         [HttpPost]

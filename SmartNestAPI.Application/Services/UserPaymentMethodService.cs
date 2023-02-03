@@ -47,11 +47,12 @@ namespace SmartNestAPI.Application.Services
             }
         }
 
-        public List<UserPaymentMethodRes> GetUserPaymentMethodRecords()
+        public List<UserPaymentMethodRes> GetUserPaymentMethodRecords(string clientId)
         {
             try
             {
-                return _mapper.Map<List<UserPaymentMethodRes>>(_context.SnUserPaymentMethods.ToList());
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientId).Select(a => a.Id).FirstOrDefault();
+                return _mapper.Map<List<UserPaymentMethodRes>>(_context.SnUserPaymentMethods.Where(u => u.UserId == userId).ToList());
             }
             catch (Exception ex)
             {
@@ -77,7 +78,7 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                _context.SnUserPaymentMethods.Update(_mapper.Map<SnUserPaymentMethod>(UserPaymentMethod));
+                _context.Update(_mapper.Map<SnUserPaymentMethod>(UserPaymentMethod));
                 _context.SaveChanges();
             }
             catch (Exception ex)

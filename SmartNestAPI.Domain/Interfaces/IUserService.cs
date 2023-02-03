@@ -15,6 +15,6 @@ namespace SmartNestAPI.Domain.Interfaces
         void UpdateUserRecord(UserReq order);
         void DeleteUserRecord(Guid id);
         UserRes GetUserSingleRecord(Guid id);
-        List<UserRes> GetUserRecords();
+        UserRes GetUserRecord(string clientId);
     }
 }

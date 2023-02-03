@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
@@ -21,18 +22,18 @@ namespace SmartNestAPI.Controllers
             _userService = userService;
         }
         [HttpGet]
-        public IEnumerable<UserRes> Get()
+        public UserRes Get()
         {
-            return _userService.GetUserRecords();
+            var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+            return _userService.GetUserRecord(clientID);
         }
-
         [HttpPost]
         public IActionResult Create([FromBody] UserReq user)
         {
             if (ModelState.IsValid)
             {
-                Guid obj = Guid.NewGuid();
-                user.Id = obj;
+                var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+                user.AuthId = clientID;
                 _userService.AddUserRecord(user);
                 return Ok();
             }
@@ -42,17 +43,13 @@ namespace SmartNestAPI.Controllers
             }
         }
 
-        [HttpGet("{id}")]
-        public UserRes Details(Guid id)
-        {
-            return _userService.GetUserSingleRecord(id);
-        }
-
         [HttpPut]
         public IActionResult Edit([FromBody] UserReq user)
         {
             if (ModelState.IsValid)
             {
+                var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+                user.AuthId = clientID;
                 _userService.UpdateUserRecord(user);
                 return Ok();
             }

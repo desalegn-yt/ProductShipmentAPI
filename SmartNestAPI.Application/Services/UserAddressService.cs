@@ -77,7 +77,7 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                _context.SnUserAddresses.Update(_mapper.Map<SnUserAddress>(userAddress));
+                _context.Update(_mapper.Map<SnUserAddress>(userAddress));
                 _context.SaveChanges();
             }
             catch (Exception ex)

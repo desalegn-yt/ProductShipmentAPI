@@ -15,6 +15,6 @@ namespace SmartNestAPI.Domain.Interfaces
         void UpdateUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod);
         void DeleteUserPaymentMethodRecord(Guid id);
         UserPaymentMethodRes GetUserPaymentMethodSingleRecord(Guid id);
-        List<UserPaymentMethodRes> GetUserPaymentMethodRecords();
+        List<UserPaymentMethodRes> GetUserPaymentMethodRecords(string clientId);
     }
 }

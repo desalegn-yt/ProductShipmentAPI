@@ -77,7 +77,7 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                _context.SnSuppliers.Update(_mapper.Map<SnSupplier>(Supplier));
+                _context.Update(_mapper.Map<SnSupplier>(Supplier));
                 _context.SaveChanges();
             }
             catch (Exception ex)
