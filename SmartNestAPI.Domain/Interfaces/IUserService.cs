@@ -11,9 +11,9 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IUserService
     {
-        void AddUserRecord(UserReq order);
-        void UpdateUserRecord(UserReq order);
-        void DeleteUserRecord(Guid id);
+        bool AddUserRecord(UserReq order);
+        bool UpdateUserRecord(UserReq order);
+        bool DeleteUserRecord(Guid id);
         UserRes GetUserSingleRecord(Guid id);
         UserRes GetUserRecord(string clientId);
     }

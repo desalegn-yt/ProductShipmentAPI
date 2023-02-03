@@ -11,9 +11,9 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IOrderService
     {
-        void AddOrderRecord(OrderReq order);
-        void UpdateOrderRecord(OrderReq order);
-        void DeleteOrderRecord(Guid id);
+        bool AddOrderRecord(OrderReq order);
+        bool UpdateOrderRecord(OrderReq order);
+        bool DeleteOrderRecord(Guid id);
         OrderRes GetOrderSingleRecord(Guid id);
         List<OrderRes> GetOrderRecords(string clientId);
     }

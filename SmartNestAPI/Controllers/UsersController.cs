@@ -35,8 +35,15 @@ namespace SmartNestAPI.Controllers
             {
                 var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
                 user.AuthId = clientID;
-                _userService.AddUserRecord(user);
-                return Ok();
+                if (_userService.AddUserRecord(user))
+                {
+                    return Ok("User created successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating user!");
+
+                }
             }
             else
             {
@@ -51,8 +58,15 @@ namespace SmartNestAPI.Controllers
             {
                 var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
                 user.AuthId = clientID;
-                _userService.UpdateUserRecord(user);
-                return Ok();
+                if (_userService.UpdateUserRecord(user))
+                {
+                    return Ok("User updated successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while updating user!");
+
+                }
             }
             else
             {
@@ -68,8 +82,15 @@ namespace SmartNestAPI.Controllers
             {
                 return NotFound();
             }
-            _userService.DeleteUserRecord(id);
-            return Ok();
+            if (_userService.DeleteUserRecord(id))
+            {
+                return Ok("User deleted successfully!");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting user!");
+
+            }
         }
     }
 }

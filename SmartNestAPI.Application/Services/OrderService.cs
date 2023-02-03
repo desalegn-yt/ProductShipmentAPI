@@ -20,30 +20,34 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public void AddOrderRecord(OrderReq order)
+        public bool AddOrderRecord(OrderReq order)
         {
             try
             {
                 _context.SnOrders.Add(_mapper.Map<SnOrder>(order));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while adding order. Error:- " + ex.Message);
+                return false;
             }
         }
 
-        public void DeleteOrderRecord(Guid id)
+        public bool DeleteOrderRecord(Guid id)
         {
             try
             {
                 var entity = _context.SnOrders.FirstOrDefault(t => t.Id == id);
                 _context.SnOrders.Remove(entity);
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while deleting order. Error:- " + ex.Message);
+                return false;
             }
         }
 
@@ -74,16 +78,18 @@ namespace SmartNestAPI.Application.Services
             return new OrderRes();
         }
 
-        public void UpdateOrderRecord(OrderReq order)
+        public bool UpdateOrderRecord(OrderReq order)
         {
             try
             {
                 _context.Update(_mapper.Map<SnOrder>(order));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while updating orders. Error:- " + ex.Message);
+                return false;
             }
         }
     }

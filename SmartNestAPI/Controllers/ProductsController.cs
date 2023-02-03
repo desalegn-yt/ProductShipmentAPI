@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartNestAPI.Application.Services;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
@@ -33,8 +34,14 @@ namespace SmartNestAPI.Controllers
             {
                 Guid obj = Guid.NewGuid();
                 product.Id = obj;
-                _productService.AddProductRecord(product);
-                return Ok();
+                if (_productService.AddProductRecord(product))
+                {
+                    return Ok("Product created successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating product!");
+                }
             }
             else
             {
@@ -53,8 +60,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _productService.UpdateProductRecord(product);
-                return Ok();
+                if (_productService.UpdateProductRecord(product))
+                {
+                    return Ok("Product update successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while updating product!");
+                }
             }
             else
             {
@@ -70,8 +83,14 @@ namespace SmartNestAPI.Controllers
             {
                 return NotFound();
             }
-            _productService.DeleteProductRecord(id);
-            return Ok();
+            if (_productService.DeleteProductRecord(id))
+            {
+                return Ok("Product delete successfully!");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting product!");
+            }
         }
     }
 }

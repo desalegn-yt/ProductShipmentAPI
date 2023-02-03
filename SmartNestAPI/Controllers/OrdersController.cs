@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using SmartNestAPI.Application.Services;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
@@ -37,8 +38,15 @@ namespace SmartNestAPI.Controllers
             {
                 Guid obj = Guid.NewGuid();
                 order.Id = obj;
-                _orderService.AddOrderRecord(order);
-                return Ok();
+                if (_orderService.AddOrderRecord(order))
+                {
+                    return Ok("Order created successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating order!");
+
+                }
             }
             else
             {
@@ -56,8 +64,15 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _orderService.UpdateOrderRecord(order);
-                return Ok();
+                if (_orderService.UpdateOrderRecord(order))
+                {
+                    return Ok("Order update successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while updating order!");
+
+                }
             }
             else
             {
@@ -73,8 +88,15 @@ namespace SmartNestAPI.Controllers
             {
                 return NotFound();
             }
-            _orderService.DeleteOrderRecord(id);
-            return Ok();
+            if (_orderService.DeleteOrderRecord(id))
+            {
+                return Ok("Order delete successfully!");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting order!");
+
+            }
         }
     }
 }

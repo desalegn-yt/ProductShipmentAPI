@@ -20,30 +20,34 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public void AddProductRecord(ProductReq product)
+        public bool AddProductRecord(ProductReq product)
         {
             try
             {
                 _context.SnProducts.Add(_mapper.Map<SnProduct>(product));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while adding product. Error:- " + ex.Message);
+                return false;
             }
         }
 
-        public void DeleteProductRecord(Guid id)
+        public bool DeleteProductRecord(Guid id)
         {
             try
             {
                 var entity = _context.SnProducts.FirstOrDefault(t => t.Id == id);
                 _context.SnProducts.Remove(entity);
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while deleting product. Error:- " + ex.Message);
+                return false;
             }
         }
 
@@ -73,16 +77,18 @@ namespace SmartNestAPI.Application.Services
             return new ProductRes();
         }
 
-        public void UpdateProductRecord(ProductReq product)
+        public bool UpdateProductRecord(ProductReq product)
         {
             try
             {
                 _context.Update(_mapper.Map<SnProduct>(product));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while updating products. Error:- " + ex.Message);
+                return false;
             }
         }
     }

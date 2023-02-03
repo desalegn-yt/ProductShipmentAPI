@@ -34,8 +34,14 @@ namespace SmartNestAPI.Controllers
             {
                 Guid obj = Guid.NewGuid();
                 user.Id = obj;
-                _UserAddresservice.AddUserAddressRecord(user);
-                return Ok();
+                if (_UserAddresservice.AddUserAddressRecord(user))
+                {
+                    return Ok("User address created successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating user address!");
+                }
             }
             else
             {
@@ -54,8 +60,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _UserAddresservice.UpdateUserAddressRecord(user);
-                return Ok();
+                if (_UserAddresservice.UpdateUserAddressRecord(user))
+                {
+                    return Ok("User address updated successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while updating user address!");
+                }
             }
             else
             {
@@ -71,8 +83,14 @@ namespace SmartNestAPI.Controllers
             {
                 return NotFound();
             }
-            _UserAddresservice.DeleteUserAddressRecord(id);
-            return Ok();
+            if (_UserAddresservice.DeleteUserAddressRecord(id))
+            {
+                return Ok("User address deleted successfully!");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting user address!");
+            }
         }
     }
 }

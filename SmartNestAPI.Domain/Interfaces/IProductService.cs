@@ -11,9 +11,9 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IProductService
     {
-        void AddProductRecord(ProductReq product);
-        void UpdateProductRecord(ProductReq product);
-        void DeleteProductRecord(Guid id);
+        bool AddProductRecord(ProductReq product);
+        bool UpdateProductRecord(ProductReq product);
+        bool DeleteProductRecord(Guid id);
         ProductRes GetProductSingleRecord(Guid id);
         List<ProductRes> GetProductRecords();
     }

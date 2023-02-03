@@ -20,30 +20,34 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public void AddUserAddressRecord(UserAddressReq userAddress)
+        public bool AddUserAddressRecord(UserAddressReq userAddress)
         {
             try
             {
                 _context.SnUserAddresses.Add(_mapper.Map<SnUserAddress>(userAddress));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while adding userAddress. Error:- " + ex.Message);
+                return false;
             }
         }
 
-        public void DeleteUserAddressRecord(Guid id)
+        public bool DeleteUserAddressRecord(Guid id)
         {
             try
             {
                 var entity = _context.SnUserAddresses.FirstOrDefault(t => t.Id == id);
                 _context.SnUserAddresses.Remove(entity);
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while deleting userAddress. Error:- " + ex.Message);
+                return false;
             }
         }
 
@@ -73,16 +77,18 @@ namespace SmartNestAPI.Application.Services
             return new UserAddressRes();
         }
 
-        public void UpdateUserAddressRecord(UserAddressReq userAddress)
+        public bool UpdateUserAddressRecord(UserAddressReq userAddress)
         {
             try
             {
                 _context.Update(_mapper.Map<SnUserAddress>(userAddress));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while updating userAddress. Error:- " + ex.Message);
+                return false;
             }
         }
     }
