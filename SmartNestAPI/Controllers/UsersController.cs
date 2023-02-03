@@ -28,6 +28,7 @@ namespace SmartNestAPI.Controllers
             return _userService.GetUserRecord(clientID);
         }
         [HttpPost]
+        [AllowAnonymous]
         public IActionResult Create([FromBody] UserReq user)
         {
             if (ModelState.IsValid)
