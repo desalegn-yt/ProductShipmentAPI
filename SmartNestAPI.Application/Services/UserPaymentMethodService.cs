@@ -20,30 +20,34 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public void AddUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod)
+        public bool AddUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod)
         {
             try
             {
                 _context.SnUserPaymentMethods.Add(_mapper.Map<SnUserPaymentMethod>(UserPaymentMethod));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while adding UserPaymentMethod. Error:- " + ex.Message);
+                return false;
             }
         }
 
-        public void DeleteUserPaymentMethodRecord(Guid id)
+        public bool DeleteUserPaymentMethodRecord(Guid id)
         {
             try
             {
                 var entity = _context.SnUserPaymentMethods.FirstOrDefault(t => t.Id == id);
                 _context.SnUserPaymentMethods.Remove(entity);
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while deleting UserPaymentMethod. Error:- " + ex.Message);
+                return false;
             }
         }
 
@@ -74,16 +78,18 @@ namespace SmartNestAPI.Application.Services
             return new UserPaymentMethodRes();
         }
 
-        public void UpdateUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod)
+        public bool UpdateUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod)
         {
             try
             {
                 _context.Update(_mapper.Map<SnUserPaymentMethod>(UserPaymentMethod));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while updating UserPaymentMethods. Error:- " + ex.Message);
+                return false;
             }
         }
     }

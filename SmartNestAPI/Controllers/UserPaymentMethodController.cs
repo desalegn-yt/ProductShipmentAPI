@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using SmartNestAPI.Application.Services;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
@@ -33,10 +34,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid obj = Guid.NewGuid();
-                UserPaymentMethod.Id = obj;
-                _UserPaymentMethodService.AddUserPaymentMethodRecord(UserPaymentMethod);
-                return Ok();
+                if (_UserPaymentMethodService.AddUserPaymentMethodRecord(UserPaymentMethod))
+                {
+                    return Ok("Payment method created successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating payment method!");
+                }
             }
             else
             {
@@ -55,8 +60,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _UserPaymentMethodService.UpdateUserPaymentMethodRecord(UserPaymentMethod);
-                return Ok();
+                if(_UserPaymentMethodService.UpdateUserPaymentMethodRecord(UserPaymentMethod))
+                {
+                    return Ok("Payment method updated successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while updating payment method!");
+                }
             }
             else
             {
@@ -72,8 +83,14 @@ namespace SmartNestAPI.Controllers
             {
                 return NotFound();
             }
-            _UserPaymentMethodService.DeleteUserPaymentMethodRecord(id);
-            return Ok();
+            if (_UserPaymentMethodService.DeleteUserPaymentMethodRecord(id))
+            {
+                return Ok("Payment method deleted successfully!");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting payment method!");
+            }
         }
     }
 }

@@ -11,9 +11,9 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IUserPaymentMethodService
     {
-        void AddUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod);
-        void UpdateUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod);
-        void DeleteUserPaymentMethodRecord(Guid id);
+        bool AddUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod);
+        bool UpdateUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod);
+        bool DeleteUserPaymentMethodRecord(Guid id);
         UserPaymentMethodRes GetUserPaymentMethodSingleRecord(Guid id);
         List<UserPaymentMethodRes> GetUserPaymentMethodRecords(string clientId);
     }

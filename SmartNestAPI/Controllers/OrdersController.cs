@@ -36,8 +36,6 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid obj = Guid.NewGuid();
-                order.Id = obj;
                 if (_orderService.AddOrderRecord(order))
                 {
                     return Ok("Order created successfully!");
@@ -66,7 +64,7 @@ namespace SmartNestAPI.Controllers
             {
                 if (_orderService.UpdateOrderRecord(order))
                 {
-                    return Ok("Order update successfully!");
+                    return Ok("Order updated successfully!");
                 }
                 else
                 {
@@ -90,7 +88,7 @@ namespace SmartNestAPI.Controllers
             }
             if (_orderService.DeleteOrderRecord(id))
             {
-                return Ok("Order delete successfully!");
+                return Ok("Order deleted successfully!");
             }
             else
             {

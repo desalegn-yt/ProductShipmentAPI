@@ -20,30 +20,34 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public void AddUserContainerRecord(UserContainerReq UserContainer)
+        public bool AddUserContainerRecord(UserContainerReq UserContainer)
         {
             try
             {
                 _context.SnUserContainers.Add(_mapper.Map<SnUserContainer>(UserContainer));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while adding UserContainer. Error:- " + ex.Message);
+                return false;
             }
         }
 
-        public void DeleteUserContainerRecord(Guid id)
+        public bool DeleteUserContainerRecord(Guid id)
         {
             try
             {
                 var entity = _context.SnUserContainers.FirstOrDefault(t => t.Id == id);
                 _context.SnUserContainers.Remove(entity);
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while deleting UserContainer. Error:- " + ex.Message);
+                return false;
             }
         }
 
@@ -74,16 +78,18 @@ namespace SmartNestAPI.Application.Services
             return new UserContainerRes();
         }
 
-        public void UpdateUserContainerRecord(UserContainerReq UserContainer)
+        public bool UpdateUserContainerRecord(UserContainerReq UserContainer)
         {
             try
             {
                 _context.Update(_mapper.Map<SnUserContainer>(UserContainer));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while updating UserContainers. Error:- " + ex.Message);
+                return false;
             }
         }
 

@@ -6,6 +6,6 @@ namespace SmartNestAPI.Domain.Entities.Request
     public class ProductReq
     {
         public string Name { get; set; } = null!;
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
     }
 }

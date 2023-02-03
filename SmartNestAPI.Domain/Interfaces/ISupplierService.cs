@@ -11,9 +11,9 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface ISupplierService
     {
-        void AddSupplierRecord(SupplierReq supplier);
-        void UpdateSupplierRecord(SupplierReq supplier);
-        void DeleteSupplierRecord(Guid id);
+        bool AddSupplierRecord(SupplierReq supplier);
+        bool UpdateSupplierRecord(SupplierReq supplier);
+        bool DeleteSupplierRecord(Guid id);
         SupplierRes GetSupplierSingleRecord(Guid id);
         List<SupplierRes> GetSupplierRecords();
     }

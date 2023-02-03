@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Net.Http.Headers;
+using SmartNestAPI.Application.Services;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
@@ -33,10 +34,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid obj = Guid.NewGuid();
-                UserContainer.Id = obj;
-                _UserContainerService.AddUserContainerRecord(UserContainer);
-                return Ok();
+                if (_UserContainerService.AddUserContainerRecord(UserContainer))
+                {
+                    return Ok("User container created successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating user container!");
+                }
             }
             else
             {
@@ -55,8 +60,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _UserContainerService.UpdateUserContainerRecord(UserContainer);
-                return Ok();
+                if (_UserContainerService.UpdateUserContainerRecord(UserContainer))
+                {
+                    return Ok("User container updated successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while updating user container!");
+                }
             }
             else
             {
@@ -72,8 +83,14 @@ namespace SmartNestAPI.Controllers
             {
                 return NotFound();
             }
-            _UserContainerService.DeleteUserContainerRecord(id);
-            return Ok();
+            if (_UserContainerService.DeleteUserContainerRecord(id))
+            {
+                return Ok("User container deleted successfully!");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting user container!");
+            }
         }
     }
 }

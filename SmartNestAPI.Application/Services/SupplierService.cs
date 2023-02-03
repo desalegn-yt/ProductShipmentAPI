@@ -20,30 +20,34 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public void AddSupplierRecord(SupplierReq supplier)
+        public bool AddSupplierRecord(SupplierReq supplier)
         {
             try
             {
                 _context.SnSuppliers.Add(_mapper.Map<SnSupplier>(supplier));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while adding Supplier. Error:- " + ex.Message);
+                return false;
             }
         }
 
-        public void DeleteSupplierRecord(Guid id)
+        public bool DeleteSupplierRecord(Guid id)
         {
             try
             {
                 var entity = _context.SnSuppliers.FirstOrDefault(t => t.Id == id);
                 _context.SnSuppliers.Remove(entity);
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while deleting Supplier. Error:- " + ex.Message);
+                return false;
             }
         }
 
@@ -73,16 +77,18 @@ namespace SmartNestAPI.Application.Services
             return new SupplierRes();
         }
 
-        public void UpdateSupplierRecord(SupplierReq Supplier)
+        public bool UpdateSupplierRecord(SupplierReq Supplier)
         {
             try
             {
                 _context.Update(_mapper.Map<SnSupplier>(Supplier));
                 _context.SaveChanges();
+                return true;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while updating Suppliers. Error:- " + ex.Message);
+                return false;
             }
         }
     }

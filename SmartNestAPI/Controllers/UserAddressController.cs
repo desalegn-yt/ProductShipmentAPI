@@ -32,8 +32,6 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid obj = Guid.NewGuid();
-                user.Id = obj;
                 if (_UserAddresservice.AddUserAddressRecord(user))
                 {
                     return Ok("User address created successfully!");

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using SmartNestAPI.Application.Services;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
@@ -31,10 +32,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid obj = Guid.NewGuid();
-                supplier.Id = obj;
-                _SupplierService.AddSupplierRecord(supplier);
-                return Ok();
+                if (_SupplierService.AddSupplierRecord(supplier))
+                {
+                    return Ok("Supplier created successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating supplier!");
+                }
             }
             else
             {
@@ -53,8 +58,14 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                _SupplierService.UpdateSupplierRecord(supplier);
-                return Ok();
+                if (_SupplierService.UpdateSupplierRecord(supplier))
+                {
+                    return Ok("Supplier updated successfully!");
+                }
+                else
+                {
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while updating supplier!");
+                }
             }
             else
             {
@@ -70,8 +81,14 @@ namespace SmartNestAPI.Controllers
             {
                 return NotFound();
             }
-            _SupplierService.DeleteSupplierRecord(id);
-            return Ok();
+            if (_SupplierService.DeleteSupplierRecord(id))
+            {
+                return Ok("Supplier deleted successfully!");
+            }
+            else
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting supplier!");
+            }
         }
     }
 }

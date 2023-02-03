@@ -32,8 +32,6 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                Guid obj = Guid.NewGuid();
-                product.Id = obj;
                 if (_productService.AddProductRecord(product))
                 {
                     return Ok("Product created successfully!");
@@ -62,7 +60,7 @@ namespace SmartNestAPI.Controllers
             {
                 if (_productService.UpdateProductRecord(product))
                 {
-                    return Ok("Product update successfully!");
+                    return Ok("Product updated successfully!");
                 }
                 else
                 {
@@ -85,7 +83,7 @@ namespace SmartNestAPI.Controllers
             }
             if (_productService.DeleteProductRecord(id))
             {
-                return Ok("Product delete successfully!");
+                return Ok("Product deleted successfully!");
             }
             else
             {

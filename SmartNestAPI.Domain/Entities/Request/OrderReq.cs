@@ -15,7 +15,7 @@ namespace SmartNestAPI.Domain.Entities.Request
         public string ProductName { get; set; } = null!;
         public Guid? ContainerId { get; set; }
         public string? ContainerName { get; set; }
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public DateTime DateOrdered { get; set; }
     }
 }
