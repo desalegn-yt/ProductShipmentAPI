@@ -12,7 +12,7 @@ namespace SmartNestAPI.Domain.Entities.Request
         public DateTime DateCreate { get; set; }= DateTime.UtcNow;
         public string? AuthId { get; set; } = null!;
         public string? Status { get; set; } = null!;
-        public string? ProfileUrl { get; set; }
+        //public string? ProfileUrl { get; set; }
         public string? UserName { get; set; }
     }
 }

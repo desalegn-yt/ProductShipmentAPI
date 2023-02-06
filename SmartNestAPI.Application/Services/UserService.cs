@@ -55,8 +55,11 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                var result = _context.SnUsers.FirstOrDefault(a => a.AuthId == clientId);
-                return _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(a=>a.AuthId== clientId));
+                var result = _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(a => a.AuthId == clientId));
+                result.AddressesCount = _context.SnUserAddresses.Count(a => a.Id == result.Id);
+                result.ContainersCount = _context.SnUserContainers.Count(a => a.UserId == result.Id);
+                result.PaymentMethodsCount = _context.SnUserPaymentMethods.Count(a => a.UserId == result.Id);
+                return result;
             }
             catch (Exception ex)
             {
@@ -78,13 +81,19 @@ namespace SmartNestAPI.Application.Services
             return new UserRes();
         }
 
-        public bool UpdateUserRecord(UserReq user)
+        public bool UpdateUserRecord(UserReq user, string clientID)
         {
             try
             {
-                _context.Update(_mapper.Map<SnUser>(user));
-                _context.SaveChanges();
-                return true;
+                var userResult = _context.SnUsers.Where(u => u.AuthId == clientID).FirstOrDefault();
+                if (userResult != null)
+                {
+                    userResult.FirstName = user.FirstName;
+                    userResult.LastName = user.LastName;
+                    _context.Update(userResult);
+                    _context.SaveChanges();
+                    return true;
+                }return false;
             }
             catch (Exception ex)
             {

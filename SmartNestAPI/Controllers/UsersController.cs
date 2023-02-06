@@ -58,7 +58,7 @@ namespace SmartNestAPI.Controllers
             {
                 var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
                 user.AuthId = clientID;
-                if (_userService.UpdateUserRecord(user))
+                if (_userService.UpdateUserRecord(user, clientID))
                 {
                     return Ok("User updated successfully!");
                 }
@@ -74,23 +74,23 @@ namespace SmartNestAPI.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(Guid id)
-        {
-            var data = _userService.GetUserSingleRecord(id);
-            if (data == null)
-            {
-                return NotFound();
-            }
-            if (_userService.DeleteUserRecord(id))
-            {
-                return Ok("User deleted successfully!");
-            }
-            else
-            {
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting user!");
+        //[HttpDelete("{id}")]
+        //public IActionResult DeleteConfirmed(Guid id)
+        //{
+        //    var data = _userService.GetUserSingleRecord(id);
+        //    if (data == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    if (_userService.DeleteUserRecord(id))
+        //    {
+        //        return Ok("User deleted successfully!");
+        //    }
+        //    else
+        //    {
+        //        return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while deleting user!");
 
-            }
-        }
+        //    }
+        //}
     }
 }
