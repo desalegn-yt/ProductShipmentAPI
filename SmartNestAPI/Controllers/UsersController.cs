@@ -52,12 +52,11 @@ namespace SmartNestAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] UserReq user)
+        public IActionResult Edit([FromBody] UserUpdateReq user)
         {
             if (ModelState.IsValid)
             {
                 var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
-                user.AuthId = clientID;
                 if (_userService.UpdateUserRecord(user, clientID))
                 {
                     return Ok("User updated successfully!");

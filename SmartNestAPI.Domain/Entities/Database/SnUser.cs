@@ -9,6 +9,7 @@ namespace SmartNestAPI.Domain.Entities.Database
         public string? FirstName { get; set; }
         public string? LastName { get; set; }
         public string Email { get; set; } = null!;
+        public string PhoneNumber { get; set; } = null!;
         public DateTime DateCreate { get; set; }
         public string AuthId { get; set; } = null!;
         public string Status { get; set; } = null!;

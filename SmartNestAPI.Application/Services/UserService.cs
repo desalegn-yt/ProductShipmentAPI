@@ -55,11 +55,11 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                var result = _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(a => a.AuthId == clientId));
-                result.AddressesCount = _context.SnUserAddresses.Count(a => a.Id == result.Id);
-                result.ContainersCount = _context.SnUserContainers.Count(a => a.UserId == result.Id);
-                result.PaymentMethodsCount = _context.SnUserPaymentMethods.Count(a => a.UserId == result.Id);
-                return result;
+                var users = _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(a => a.AuthId == clientId));
+                users.AddressesCount = _context.SnUserAddresses.Count(a => a.UserId == users.Id);
+                users.ContainersCount = _context.SnUserContainers.Count(a => a.UserId == users.Id);
+                users.PaymentMethodsCount = _context.SnUserPaymentMethods.Count(a => a.UserId == users.Id);
+                return users;
             }
             catch (Exception ex)
             {
@@ -72,7 +72,11 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                return _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(t => t.Id == id));
+                var user = _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(t => t.Id == id));
+                user.AddressesCount = _context.SnUserAddresses.Count(a => a.UserId == user.Id);
+                user.ContainersCount = _context.SnUserContainers.Count(a => a.UserId == user.Id);
+                user.PaymentMethodsCount = _context.SnUserPaymentMethods.Count(a => a.UserId == user.Id);
+                return user;
             }
             catch (Exception ex)
             {
@@ -81,7 +85,7 @@ namespace SmartNestAPI.Application.Services
             return new UserRes();
         }
 
-        public bool UpdateUserRecord(UserReq user, string clientID)
+        public bool UpdateUserRecord(UserUpdateReq user, string clientID)
         {
             try
             {

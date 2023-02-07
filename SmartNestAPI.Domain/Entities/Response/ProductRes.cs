@@ -5,7 +5,10 @@ namespace SmartNestAPI.Domain.Entities.Response
 {
     public class ProductRes
     {
-        public string Name { get; set; } = null!;
         public Guid Id { get; set; }
+        public string Name { get; set; } = null!;
+        public string Description { get; set; } = null!;
+        public string ImageUrl { get; set; } = null!;
+        public double Price { get; set; }
     }
 }
