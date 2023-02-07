@@ -5,7 +5,7 @@ namespace SmartNestAPI.Domain.Entities.Request
 {
     public class ContainerRuleReq
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid? ContainerId { get; set; }
         public Guid UserId { get; set; }
         public string Type { get; set; } = null!;

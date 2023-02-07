@@ -22,12 +22,22 @@ namespace SmartNestAPI.Application.Core
             CreateMap<SnProduct, ProductRes>();
             CreateMap<SupplierReq, SnSupplier>();
             CreateMap<SnSupplier, SupplierRes>();
+            CreateMap<SupplierProductReq, SnSupplierProduct>();
+            CreateMap<SnSupplierProduct, SupplierProductRes>();
             CreateMap<ContainerReq, SnContainer>();
             CreateMap<SnContainer, ContainerRes>();
             CreateMap<UserAddressReq, SnUserAddress>();
             CreateMap<SnUserAddress, UserAddressRes>();
             CreateMap<UserContainerReq, SnUserContainer>();
             CreateMap<SnUserContainer, UserContainerRes>();
+            CreateMap<CategoryReq, SnCategory>();
+            CreateMap<SnCategory, CategoryRes>();
+            CreateMap<ContainerLogReq, SnContainerLog>();
+            CreateMap<SnContainerLog, ContainerLogRes>();
+            CreateMap<ContainerRuleReq, SnContainerRule>();
+            CreateMap<SnContainerRule, ContainerRuleRes>();
+            CreateMap<ShoppingListReq, SnShoppingList>();
+            CreateMap<SnShoppingList, ShoppingListRes>();
             CreateMap<UserPaymentMethodReq, SnUserPaymentMethod>();
             CreateMap<SnUserPaymentMethod, UserPaymentMethodRes>();
         }

@@ -5,7 +5,7 @@ namespace SmartNestAPI.Domain.Entities.Request
 {
     public class ShoppingListReq
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid? UserId { get; set; }
         public Guid? ContainerId { get; set; }
         public string? Status { get; set; }

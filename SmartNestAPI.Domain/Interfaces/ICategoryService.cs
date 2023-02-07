@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace SmartNestAPI.Domain.Interfaces
 {
-    public interface IContainerService
+    public interface ICategoryService
     {
-        bool AddContainerRecord(ContainerReq container);
-        bool UpdateContainerRecord(ContainerReq container);
-        bool DeleteContainerRecord(Guid id);
-        ContainerRes GetContainerSingleRecord(Guid id);
-        List<ContainerRes> GetContainerRecords();
+        bool AddCategoryRecord(CategoryReq category);
+        bool UpdateCategoryRecord(CategoryReq category);
+        bool DeleteCategoryRecord(Guid id);
+        CategoryRes GetCategorySingleRecord(Guid id);
+        List<CategoryRes> GetCategoryRecords();
     }
 }

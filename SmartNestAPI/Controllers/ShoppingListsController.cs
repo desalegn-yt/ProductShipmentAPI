@@ -11,38 +11,38 @@ using System.Net;
 
 namespace SmartNestAPI.Controllers
 {
-    [Route("api/order")]
+    [Route("api/shoppingList")]
     [ApiController]
     [Authorize]
-    public class OrdersController : ControllerBase
+    public class ShoppingListsController : ControllerBase
     {
-        private readonly IOrderService _orderService;
+        private readonly IShoppingListService _shoppingListService;
 
-        public OrdersController(IOrderService orderService)
+        public ShoppingListsController(IShoppingListService shoppingListService)
         {
-            _orderService = orderService;
+            _shoppingListService = shoppingListService;
         }
 
         [HttpGet]
-        public IEnumerable<OrderRes> Get()
+        public IEnumerable<ShoppingListRes> Get()
         {
             var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
 
-            return _orderService.GetOrderRecords(clientID);
+            return _shoppingListService.GetShoppingListRecords(clientID);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] OrderReq order)
+        public IActionResult Create([FromBody] ShoppingListReq shoppingList)
         {
             if (ModelState.IsValid)
             {
-                if (_orderService.AddOrderRecord(order))
+                if (_shoppingListService.AddShoppingListRecord(shoppingList))
                 {
-                    return Ok("Order created successfully!");
+                    return Ok("ShoppingList created successfully!");
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating order!");
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating ShoppingList!");
 
                 }
             }
@@ -52,9 +52,9 @@ namespace SmartNestAPI.Controllers
             }
         }
         [HttpGet("{id}")]
-        public OrderRes Details(Guid id)
+        public ShoppingListRes Details(Guid id)
         {
-            return _orderService.GetOrderSingleRecord(id);
+            return _shoppingListService.GetShoppingListSingleRecord(id);
         }
     }
 }

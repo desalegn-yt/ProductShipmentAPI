@@ -15,16 +15,16 @@ namespace SmartNestAPI.Controllers
     [Authorize]
     public class UserAddressController : ControllerBase
     {
-        private readonly IUserAddressService _UserAddresservice;
+        private readonly IUserAddressService _userAddresservice;
 
         public UserAddressController(IUserAddressService UserAddresservice)
         {
-            _UserAddresservice = UserAddresservice;
+            _userAddresservice = UserAddresservice;
         }
         [HttpGet]
         public IEnumerable<UserAddressRes> Get()
         {
-            return _UserAddresservice.GetUserAddressRecords();
+            return _userAddresservice.GetUserAddressRecords();
         }
 
         [HttpPost]
@@ -32,7 +32,7 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_UserAddresservice.AddUserAddressRecord(user))
+                if (_userAddresservice.AddUserAddressRecord(user))
                 {
                     return Ok("User address created successfully!");
                 }
@@ -50,7 +50,7 @@ namespace SmartNestAPI.Controllers
         [HttpGet("{id}")]
         public UserAddressRes Details(Guid id)
         {
-            return _UserAddresservice.GetUserAddressSingleRecord(id);
+            return _userAddresservice.GetUserAddressSingleRecord(id);
         }
 
         [HttpPut]
@@ -58,7 +58,7 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_UserAddresservice.UpdateUserAddressRecord(user))
+                if (_userAddresservice.UpdateUserAddressRecord(user))
                 {
                     return Ok("User address updated successfully!");
                 }
@@ -76,12 +76,12 @@ namespace SmartNestAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(Guid id)
         {
-            var data = _UserAddresservice.GetUserAddressSingleRecord(id);
+            var data = _userAddresservice.GetUserAddressSingleRecord(id);
             if (data == null)
             {
                 return NotFound();
             }
-            if (_UserAddresservice.DeleteUserAddressRecord(id))
+            if (_userAddresservice.DeleteUserAddressRecord(id))
             {
                 return Ok("User address deleted successfully!");
             }

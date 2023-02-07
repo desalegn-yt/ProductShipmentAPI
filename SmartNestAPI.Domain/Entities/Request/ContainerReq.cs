@@ -16,6 +16,6 @@ namespace SmartNestAPI.Domain.Entities.Request
         public int PreorderQty { get; set; }
         public bool Preorder { get; set; }
         public string PreorderText { get; set; } = null!;
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
     }
 }

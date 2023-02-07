@@ -11,22 +11,22 @@ using System.Net;
 
 namespace SmartNestAPI.Controllers
 {
-    [Route("api/UserPaymentMethod")]
+    [Route("api/userPaymentMethod")]
     [ApiController]
     [Authorize]
     public class UserPaymentMethodsController : ControllerBase
     {
-        private readonly IUserPaymentMethodService _UserPaymentMethodService;
+        private readonly IUserPaymentMethodService _userPaymentMethodService;
 
         public UserPaymentMethodsController(IUserPaymentMethodService UserPaymentMethodService)
         {
-            _UserPaymentMethodService = UserPaymentMethodService;
+            _userPaymentMethodService = UserPaymentMethodService;
         }
         [HttpGet]
         public IEnumerable<UserPaymentMethodRes> Get()
         {
             var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
-            return _UserPaymentMethodService.GetUserPaymentMethodRecords(clientID);
+            return _userPaymentMethodService.GetUserPaymentMethodRecords(clientID);
         }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_UserPaymentMethodService.AddUserPaymentMethodRecord(UserPaymentMethod))
+                if (_userPaymentMethodService.AddUserPaymentMethodRecord(UserPaymentMethod))
                 {
                     return Ok("Payment method created successfully!");
                 }
@@ -52,7 +52,7 @@ namespace SmartNestAPI.Controllers
         [HttpGet("{id}")]
         public UserPaymentMethodRes Details(Guid id)
         {
-            return _UserPaymentMethodService.GetUserPaymentMethodSingleRecord(id);
+            return _userPaymentMethodService.GetUserPaymentMethodSingleRecord(id);
         }
 
         [HttpPut]
@@ -60,7 +60,7 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if(_UserPaymentMethodService.UpdateUserPaymentMethodRecord(UserPaymentMethod))
+                if(_userPaymentMethodService.UpdateUserPaymentMethodRecord(UserPaymentMethod))
                 {
                     return Ok("Payment method updated successfully!");
                 }
@@ -78,12 +78,12 @@ namespace SmartNestAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(Guid id)
         {
-            var data = _UserPaymentMethodService.GetUserPaymentMethodSingleRecord(id);
+            var data = _userPaymentMethodService.GetUserPaymentMethodSingleRecord(id);
             if (data == null)
             {
                 return NotFound();
             }
-            if (_UserPaymentMethodService.DeleteUserPaymentMethodRecord(id))
+            if (_userPaymentMethodService.DeleteUserPaymentMethodRecord(id))
             {
                 return Ok("Payment method deleted successfully!");
             }

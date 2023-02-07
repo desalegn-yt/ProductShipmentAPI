@@ -11,22 +11,22 @@ using System.Net;
 
 namespace SmartNestAPI.Controllers
 {
-    [Route("api/UserContainer")]
+    [Route("api/userContainer")]
     [ApiController]
     [Authorize]
     public class UserContainersController : ControllerBase
     {
-        private readonly IUserContainerService _UserContainerService;
+        private readonly IUserContainerService _userContainerService;
 
         public UserContainersController(IUserContainerService UserContainerService)
         {
-            _UserContainerService = UserContainerService;
+            _userContainerService = UserContainerService;
         }
         [HttpGet]
         public IEnumerable<UserContainerRes> Get()
         {
             var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
-            return _UserContainerService.GetUserContainerRecords(clientID);
+            return _userContainerService.GetUserContainerRecords(clientID);
         }
 
         [HttpPost]
@@ -34,7 +34,7 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_UserContainerService.AddUserContainerRecord(UserContainer))
+                if (_userContainerService.AddUserContainerRecord(UserContainer))
                 {
                     return Ok("User container created successfully!");
                 }
@@ -52,7 +52,7 @@ namespace SmartNestAPI.Controllers
         [HttpGet("{id}")]
         public UserContainerRes Details(Guid id)
         {
-            return _UserContainerService.GetUserContainerSingleRecord(id);
+            return _userContainerService.GetUserContainerSingleRecord(id);
         }
 
         [HttpPut]
@@ -60,7 +60,7 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_UserContainerService.UpdateUserContainerRecord(UserContainer))
+                if (_userContainerService.UpdateUserContainerRecord(UserContainer))
                 {
                     return Ok("User container updated successfully!");
                 }
@@ -78,12 +78,12 @@ namespace SmartNestAPI.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(Guid id)
         {
-            var data = _UserContainerService.GetUserContainerSingleRecord(id);
+            var data = _userContainerService.GetUserContainerSingleRecord(id);
             if (data == null)
             {
                 return NotFound();
             }
-            if (_UserContainerService.DeleteUserContainerRecord(id))
+            if (_userContainerService.DeleteUserContainerRecord(id))
             {
                 return Ok("User container deleted successfully!");
             }

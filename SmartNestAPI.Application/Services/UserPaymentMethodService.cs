@@ -20,12 +20,24 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public bool AddUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod)
+        public bool AddUserPaymentMethodRecord(UserPaymentMethodReq userPaymentMethod)
         {
             try
             {
-                _context.SnUserPaymentMethods.Add(_mapper.Map<SnUserPaymentMethod>(UserPaymentMethod));
+                _context.SnUserPaymentMethods.Add(_mapper.Map<SnUserPaymentMethod>(userPaymentMethod));
                 _context.SaveChanges();
+                //User can only have one default payment
+                if (userPaymentMethod.Default.Value)
+                {
+                    var userPaymentResult = _context.SnUserPaymentMethods.Where(u => u.Id != userPaymentMethod.Id && u.UserId == userPaymentMethod.UserId &&
+                                                                                  u.Default == true).FirstOrDefault();
+                    if (userPaymentResult != null)
+                    {
+                        userPaymentResult.Default = false;
+                        _context.Update(userPaymentResult);
+                        _context.SaveChanges();
+                    }
+                }
                 return true;
             }
             catch (Exception ex)
@@ -78,13 +90,29 @@ namespace SmartNestAPI.Application.Services
             return new UserPaymentMethodRes();
         }
 
-        public bool UpdateUserPaymentMethodRecord(UserPaymentMethodReq UserPaymentMethod)
+        public bool UpdateUserPaymentMethodRecord(UserPaymentMethodReq userPaymentMethod)
         {
             try
             {
-                _context.Update(_mapper.Map<SnUserPaymentMethod>(UserPaymentMethod));
-                _context.SaveChanges();
-                return true;
+                var userPaymentResult = _context.SnUserPaymentMethods.Where(u => u.Id == userPaymentMethod.Id).FirstOrDefault();
+                if (userPaymentResult != null)
+                {
+                    userPaymentResult.Default = userPaymentMethod.Default;
+                    _context.Update(userPaymentResult);
+                    _context.SaveChanges();
+
+                    //User can only have one default payment
+                    userPaymentResult = _context.SnUserPaymentMethods.Where(u => u.Id != userPaymentMethod.Id && u.UserId == userPaymentMethod.UserId &&
+                                                                                  u.Default == true).FirstOrDefault();
+                    if (userPaymentResult != null)
+                    {
+                        userPaymentResult.Default = false;
+                        _context.Update(userPaymentResult);
+                        _context.SaveChanges();
+                    }
+                        return true;
+                }
+                return false;
             }
             catch (Exception ex)
             {
