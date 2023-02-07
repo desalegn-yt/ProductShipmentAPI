@@ -78,13 +78,18 @@ namespace SmartNestAPI.Application.Services
             return new UserContainerRes();
         }
 
-        public bool UpdateUserContainerRecord(UserContainerReq UserContainer)
+        public bool UpdateUserContainerRecord(UserContainerReq userContainer)
         {
             try
             {
-                _context.Update(_mapper.Map<SnUserContainer>(UserContainer));
-                _context.SaveChanges();
-                return true;
+                var userContainerResult = _context.SnUserContainers.Where(u => u.Id == userContainer.Id).FirstOrDefault();
+                if (userContainerResult != null)
+                {
+                    userContainerResult.Name = userContainer.Name;
+                    _context.Update(userContainerResult);
+                    _context.SaveChanges();
+                    return true;
+                }return false;
             }
             catch (Exception ex)
             {

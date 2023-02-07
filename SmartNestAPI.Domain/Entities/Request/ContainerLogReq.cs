@@ -5,7 +5,7 @@ namespace SmartNestAPI.Domain.Entities.Request
 {
     public class ContainerLogReq
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public string LogType { get; set; } = null!;
         public string Status { get; set; } = null!;
         public DateTime DateTimeStamp { get; set; }

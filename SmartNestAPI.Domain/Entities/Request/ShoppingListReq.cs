@@ -10,6 +10,6 @@ namespace SmartNestAPI.Domain.Entities.Request
         public Guid? ContainerId { get; set; }
         public string? Status { get; set; }
         public string? Reason { get; set; }
-        public DateOnly? DateCreated { get; set; }
+        public DateOnly? DateCreated { get; set; } = new DateOnly(DateTime.UtcNow.Year, DateTime.UtcNow.Month, DateTime.UtcNow.Day);
     }
 }

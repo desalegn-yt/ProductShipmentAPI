@@ -5,7 +5,7 @@ namespace SmartNestAPI.Domain.Entities.Request
 {
     public partial class SupplierProductReq
     {
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public Guid? SupplierId { get; set; }
         public string? Name { get; set; }
         public int? Qty { get; set; }
