@@ -79,6 +79,12 @@ namespace SmartNestAPI.Extensions
             services.AddScoped<IUserContainerService, UserContainerService>();
             services.AddScoped<IUserAddressService, UserAddressService>();
             services.AddScoped<IUserPaymentMethodService, UserPaymentMethodService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IContainerLogService, ContainerLogService>();
+            services.AddScoped<IContainerRuleService, ContainerRuleService>();
+            services.AddScoped<IShoppingListService, ShoppingListService>();
+            services.AddScoped<ISupplierProductService, SupplierProductService>();
+            services.AddScoped<ISupplierService, SupplierService>();
             services.AddScoped<PostgreSqlContext>();
             services.AddScoped<LogWriter>();
 
