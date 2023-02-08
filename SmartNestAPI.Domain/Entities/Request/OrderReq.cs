@@ -10,13 +10,13 @@ namespace SmartNestAPI.Domain.Entities.Request
         public string PaymentRef { get; set; } = null!;
         public decimal PaidAmount { get; set; }
         public Guid ProductId { get; set; }
-        public string Status { get; set; } = null!;
+        public string Status { get; set; } = "Unpaid";
         public Guid UserId { get; set; }
         public string ProductName { get; set; } = null!;
         public string OrderType { get; set; } = null!;
         public Guid? ContainerId { get; set; }
         public string? ContainerName { get; set; }
         public Guid Id { get; set; } = Guid.NewGuid();
-        public DateTime DateOrdered { get; set; }
+        public DateTime DateOrdered { get; set; } = DateTime.UtcNow;
     }
 }

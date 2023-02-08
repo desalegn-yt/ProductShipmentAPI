@@ -10,5 +10,7 @@ namespace SmartNestAPI.Domain.Entities.Database
         public bool? Default { get; set; }
         public Guid? UserId { get; set; }
         public string? CardToken { get; set; }
+        public string? LastFourDights { get; set; }
+        public DateTime? ExpiryDate { get; set; }
     }
 }
