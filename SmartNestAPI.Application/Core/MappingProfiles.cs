@@ -40,6 +40,8 @@ namespace SmartNestAPI.Application.Core
             CreateMap<SnShoppingList, ShoppingListRes>();
             CreateMap<UserPaymentMethodReq, SnUserPaymentMethod>();
             CreateMap<SnUserPaymentMethod, UserPaymentMethodRes>();
+            CreateMap<CategoryReq, SnCategory>();
+            CreateMap<SnCategory, CategoryRes>();
         }
     }
 }

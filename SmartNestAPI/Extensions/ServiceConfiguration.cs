@@ -5,6 +5,7 @@ using SmartNestAPI.Application.Core;
 using SmartNestAPI.Application.Services;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Interfaces;
+using System.Reflection;
 using System.Reflection.Metadata;
 
 namespace SmartNestAPI.Extensions
@@ -18,33 +19,43 @@ namespace SmartNestAPI.Extensions
             string clientID = MyConfig.GetSection("Authentication:ClientId").Value;
             string domain = MyConfig.GetSection("Authentication:Domain").Value;
             string audience = MyConfig.GetSection("Authentication:Audience").Value;
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1",
-                        new OpenApiInfo
-                        {
-                            Title = "API",
-                            Version = "v1",
-                            Description = "A REST API",
-                        });
-
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Name = "Authorization",
-                    In = ParameterLocation.Header,
+                    Title = "SmartNest API Documentation",
+                    Version = "v1.0",
+                    Description = ""
+                });
+                options.ResolveConflictingActions(x => x.First());
+                options.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
+                {
                     Type = SecuritySchemeType.OAuth2,
+                    BearerFormat = "JWT",
                     Flows = new OpenApiOAuthFlows
                     {
                         Implicit = new OpenApiOAuthFlow
                         {
+                            TokenUrl = new Uri($"https://{domain}/oauth/token"),
+                            AuthorizationUrl = new Uri($"https://{domain}/authorize?audience={audience}"),
                             Scopes = new Dictionary<string, string>
-                {
-                    { "smart_nest", "Smart Nest" }
-                },
-                            AuthorizationUrl = new Uri(domain + "authorize?audience=" + audience)
+                  {
+                      { "openid", "OpenId" },
+
+                  }
                         }
                     }
                 });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement
+      {
+          {
+              new OpenApiSecurityScheme
+              {
+                  Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "oauth2" }
+              },
+              new[] { "openid" }
+          }
+      });
             });
 
             services.AddAuthentication(options =>
@@ -53,7 +64,7 @@ namespace SmartNestAPI.Extensions
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = domain;
+                options.Authority = $"https://{domain}";
                 options.Audience = audience;
             });
         }

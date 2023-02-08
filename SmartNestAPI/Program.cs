@@ -15,11 +15,14 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 string clientID = MyConfig.GetSection("Authentication:ClientId").Value;
+string clientSecret = MyConfig.GetSection("Authentication:ClientSecret").Value;
 app.UseSwagger();
-app.UseSwaggerUI(c =>
+app.UseSwaggerUI(settings =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartNest API Documentation");
-    c.OAuthClientId(clientID);
+    settings.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartNest API Documentation");
+    settings.OAuthClientId(clientID);
+    settings.OAuthClientSecret(clientSecret);
+    settings.OAuthUsePkce();
 });
 app.UseStatusCodePages();
 
