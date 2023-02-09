@@ -27,10 +27,10 @@ namespace SmartNestAPI.Controllers
             return _supplierProductService.GetSupplierProductRecords();
         }
 
-        [HttpGet("{id}")]
-        public SupplierProductRes Details(Guid id)
+        [HttpGet("{id}/{categoryId?}")]
+        public SupplierProductRes Details(Guid id, Guid? categoryId)
         {
-            return _supplierProductService.GetSupplierProductSingleRecord(id);
+            return _supplierProductService.GetSupplierProductSingleRecord(id, categoryId);
         }
     }
 }

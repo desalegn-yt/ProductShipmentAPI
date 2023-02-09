@@ -14,7 +14,7 @@ namespace SmartNestAPI.Domain.Interfaces
         bool AddSupplierProductRecord(SupplierProductReq supplierProduct);
         bool UpdateSupplierProductRecord(SupplierProductReq supplierProduct);
         bool DeleteSupplierProductRecord(Guid id);
-        SupplierProductRes GetSupplierProductSingleRecord(Guid id);
+        SupplierProductRes GetSupplierProductSingleRecord(Guid id, Guid? categoryId);
         List<SupplierProductRes> GetSupplierProductRecords();
     }
 }

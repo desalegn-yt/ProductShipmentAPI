@@ -94,6 +94,7 @@ namespace SmartNestAPI.Application.Services
                 {
                     userResult.FirstName = user.FirstName;
                     userResult.LastName = user.LastName;
+                    userResult.PhoneNumber = user.PhoneNumber;
                     _context.Update(userResult);
                     _context.SaveChanges();
                     return true;

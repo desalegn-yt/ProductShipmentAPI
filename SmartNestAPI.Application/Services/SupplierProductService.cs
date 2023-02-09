@@ -64,11 +64,18 @@ namespace SmartNestAPI.Application.Services
             return new List<SupplierProductRes>();
         }
 
-        public SupplierProductRes GetSupplierProductSingleRecord(Guid id)
+        public SupplierProductRes GetSupplierProductSingleRecord(Guid id, Guid? categoryId)
         {
             try
             {
-                return _mapper.Map<SupplierProductRes>(_context.SnSupplierProducts.FirstOrDefault(t => t.Id == id));
+                if (categoryId == Guid.Empty)
+                {
+                    return _mapper.Map<SupplierProductRes>(_context.SnSupplierProducts.FirstOrDefault(t => t.Id == id));
+                }
+                else
+                {
+                    return _mapper.Map<SupplierProductRes>(_context.SnSupplierProducts.FirstOrDefault(t => t.Id == id && t.CategoryId == categoryId));
+                }
             }
             catch (Exception ex)
             {
