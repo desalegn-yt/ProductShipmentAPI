@@ -25,7 +25,7 @@ namespace SmartNestAPI.Application.Services
 
 
   
-        public Charge CreatePayment(string cardNuber, long amount, string email)
+        public Charge CreatePayment(string cardNuber, double amount, string email)
         {
             var chargeResult = new Stripe.Charge();
             StripeConfiguration.SetApiKey("sk_test_51MZApDD1ztTIXwaVaa5o1sNJcp4TCzhnhTVp8xW1t72SKeDfJwWFqE6MX8kNd4GDLMnznZfztSUsjHQadYtxnskh00AQPTiSMx");
@@ -59,7 +59,7 @@ namespace SmartNestAPI.Application.Services
                 //Create Charge Object with details of Charge 
                 var chargeOptions = new ChargeCreateOptions
                 {
-                    Amount = amount,
+                    Amount = (long)(amount*100),
                     Currency = "USD",
                     ReceiptEmail = email,
                     Customer = customerResult.Id,
@@ -89,12 +89,12 @@ namespace SmartNestAPI.Application.Services
                 //Check product validity
                 var product = _context.SnProducts.FirstOrDefault(t => t.Id == order.ProductId);
                 if (product == null) return false;
-                var totalPrice = product.Price * order.Qty;
-                var chargeResult = CreatePayment(paymentMethod.CardToken, (long)totalPrice, user.Email);
+                var totalPrice = Math.Round((product.Price * order.Qty), 2);
+                var chargeResult = CreatePayment(paymentMethod.CardToken, totalPrice, user.Email);
                 if (chargeResult.Status == "succeeded")
                 {
                     order.PaymentRef = chargeResult.Id;
-                    order.PaidAmount = chargeResult.AmountCaptured;
+                    order.PaidAmount = chargeResult.AmountCaptured/100m;
                     order.Status = "Paid";
                 }else return false;
                 _context.SnOrders.Add(_mapper.Map<SnOrder>(order));
