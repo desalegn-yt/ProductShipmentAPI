@@ -11,7 +11,7 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IShoppingListService
     {
-        bool AddShoppingListRecord(ShoppingListReq shoppingList);
+        bool AddShoppingListRecord(ShoppingListReq shoppingList, string clientID);
         bool UpdateShoppingListRecord(ShoppingListReq shoppingList);
         bool DeleteShoppingListRecord(Guid id);
         ShoppingListRes GetShoppingListSingleRecord(Guid id);

@@ -64,26 +64,37 @@ namespace SmartNestAPI.Application.Services
             return new List<ContainerRes>();
         }
 
-        public ContainerRes GetContainerSingleRecord(Guid id)
+        public ContainerDetailRes GetContainerSingleRecord(Guid id)
         {
             try
             {
-                return _mapper.Map<ContainerRes>(_context.SnContainers.FirstOrDefault(t => t.Id == id));
+                var container =  _mapper.Map<ContainerDetailRes>(_context.SnContainers.FirstOrDefault(t => t.Id == id));
+                container.ContainerRules = _mapper.Map<List<ContainerRuleRes>>(_context.SnContainerRules.Where(t => t.ContainerId == id)).ToArray();
+                container.ContainerLogs = _mapper.Map<List<ContainerLogRes>>(_context.SnContainerLogs.Where(t => t.ContainerId == id).OrderByDescending(t => t.DateTimeStamp).Take(10)).ToArray();
+                return container;
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while retrieving Containers. Error:- " + ex.Message);
             }
-            return new ContainerRes();
+            return new ContainerDetailRes();
         }
 
-        public bool UpdateContainerRecord(ContainerReq container)
+        public bool UpdateContainerRecord(ContainerUpdateReq container)
         {
             try
             {
-                _context.SnContainers.Update(_mapper.Map<SnContainer>(container));
-                _context.SaveChanges();
-                return true;
+                var containerResult = _context.SnContainers.Where(u => u.Id == container.Id).FirstOrDefault();
+                if (containerResult != null)
+                {
+                    containerResult.ProductId = container.ProductId;
+                    containerResult.CurrentLevel = container.CurrentLevel;
+                    containerResult.Photo = container.Photo;
+                    containerResult.Description = container.Description;
+                    _context.Update(containerResult);
+                    _context.SaveChanges();
+                    return true;
+                }return false;
             }
             catch (Exception ex)
             {

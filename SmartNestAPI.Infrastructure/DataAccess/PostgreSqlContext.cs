@@ -52,7 +52,6 @@ namespace SmartNestAPI.Domain.Entities.Database
 
             modelBuilder.Entity<SnCategory>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("SN_Categories");
 
@@ -74,7 +73,6 @@ namespace SmartNestAPI.Domain.Entities.Database
 
             modelBuilder.Entity<SnContainerLog>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("SN_Container_Log");
 
@@ -83,7 +81,6 @@ namespace SmartNestAPI.Domain.Entities.Database
 
             modelBuilder.Entity<SnContainerRule>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("SN_Container_Rules");
             });
@@ -119,14 +116,12 @@ namespace SmartNestAPI.Domain.Entities.Database
 
             modelBuilder.Entity<SnShoppingList>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("SN_ShoppingList");
             });
 
             modelBuilder.Entity<SnSupplier>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("SN_Suppliers");
 
@@ -164,7 +159,6 @@ namespace SmartNestAPI.Domain.Entities.Database
 
             modelBuilder.Entity<SnUserContainer>(entity =>
             {
-                entity.HasNoKey();
 
                 entity.ToTable("SN_User_Containers");
             });

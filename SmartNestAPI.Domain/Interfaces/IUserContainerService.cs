@@ -11,7 +11,7 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IUserContainerService
     {
-        bool AddUserContainerRecord(UserContainerReq container);
+        bool AddUserContainerRecord(UserContainerReq container, string clientID);
         bool UpdateUserContainerRecord(UserContainerReq container);
         bool DeleteUserContainerRecord(Guid id);
         UserContainerRes GetUserContainerSingleRecord(Guid id);

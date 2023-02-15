@@ -20,10 +20,12 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public bool AddShoppingListRecord(ShoppingListReq shoppingList)
+        public bool AddShoppingListRecord(ShoppingListReq shoppingList, string clientID)
         {
             try
             {
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientID).Select(a => a.Id).FirstOrDefault();
+                shoppingList.UserId = userId;
                 _context.SnShoppingLists.Add(_mapper.Map<SnShoppingList>(shoppingList));
                 _context.SaveChanges();
                 return true;

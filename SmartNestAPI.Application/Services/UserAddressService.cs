@@ -20,10 +20,12 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public bool AddUserAddressRecord(UserAddressReq userAddress)
+        public bool AddUserAddressRecord(UserAddressReq userAddress, string clientID)
         {
             try
             {
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientID).Select(a => a.Id).FirstOrDefault();
+                userAddress.UserId = userId;
                 _context.SnUserAddresses.Add(_mapper.Map<SnUserAddress>(userAddress));
                 _context.SaveChanges();
                 return true;
@@ -51,11 +53,12 @@ namespace SmartNestAPI.Application.Services
             }
         }
 
-        public List<UserAddressRes> GetUserAddressRecords()
+        public List<UserAddressRes> GetUserAddressRecords(string clientId)
         {
             try
             {
-                return _mapper.Map<List<UserAddressRes>>(_context.SnUserAddresses.ToList());
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientId).Select(a => a.Id).FirstOrDefault();
+                return _mapper.Map<List<UserAddressRes>>(_context.SnUserAddresses.Where(u => u.UserId == userId).ToList());
             }
             catch (Exception ex)
             {
@@ -81,9 +84,18 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                _context.Update(_mapper.Map<SnUserAddress>(userAddress));
-                _context.SaveChanges();
-                return true;
+                var userAddressResult = _context.SnUserAddresses.Where(u => u.Id == userAddress.Id).FirstOrDefault();
+                if (userAddressResult != null)
+                {
+                    userAddressResult.Address1 = userAddress.Address1;
+                    userAddressResult.Address2 = userAddress.Address2;
+                    userAddressResult.ContactNumber = userAddress.ContactNumber;
+                    userAddressResult.Suburb = userAddress.Suburb;
+                    userAddressResult.Postcode = userAddress.Postcode;
+                    _context.Update(userAddressResult);
+                    _context.SaveChanges();
+                    return true;
+                }return false;
             }
             catch (Exception ex)
             {

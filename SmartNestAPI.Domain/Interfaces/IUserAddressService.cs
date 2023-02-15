@@ -11,10 +11,10 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IUserAddressService
     {
-        bool AddUserAddressRecord(UserAddressReq userAddress);
+        bool AddUserAddressRecord(UserAddressReq userAddress, string clientID);
         bool UpdateUserAddressRecord(UserAddressReq userAddress);
         bool DeleteUserAddressRecord(Guid id);
         UserAddressRes GetUserAddressSingleRecord(Guid id);
-        List<UserAddressRes> GetUserAddressRecords();
+        List<UserAddressRes> GetUserAddressRecords(string clientID);
     }
 }

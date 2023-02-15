@@ -11,7 +11,7 @@ namespace SmartNestAPI.Domain.Interfaces
 {
     public interface IContainerRuleService
     {
-        bool AddContainerRuleRecord(ContainerRuleReq containerRule);
+        bool AddContainerRuleRecord(ContainerRuleReq containerRule, string clientID);
         bool UpdateContainerRuleRecord(ContainerRuleReq containerRule);
         bool DeleteContainerRuleRecord(Guid id);
         ContainerRuleRes GetContainerRuleSingleRecord(Guid id);

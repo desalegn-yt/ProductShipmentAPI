@@ -12,9 +12,9 @@ namespace SmartNestAPI.Domain.Interfaces
     public interface IContainerService
     {
         bool AddContainerRecord(ContainerReq container);
-        bool UpdateContainerRecord(ContainerReq container);
+        bool UpdateContainerRecord(ContainerUpdateReq container);
         bool DeleteContainerRecord(Guid id);
-        ContainerRes GetContainerSingleRecord(Guid id);
+        ContainerDetailRes GetContainerSingleRecord(Guid id);
         List<ContainerRes> GetContainerRecords();
     }
 }

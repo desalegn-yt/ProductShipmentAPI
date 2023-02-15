@@ -20,10 +20,12 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public bool AddUserContainerRecord(UserContainerReq UserContainer)
+        public bool AddUserContainerRecord(UserContainerReq UserContainer, string clientID)
         {
             try
             {
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientID).Select(a => a.Id).FirstOrDefault();
+                UserContainer.UserId = userId;
                 _context.SnUserContainers.Add(_mapper.Map<SnUserContainer>(UserContainer));
                 _context.SaveChanges();
                 return true;

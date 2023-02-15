@@ -34,7 +34,8 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_userPaymentMethodService.AddUserPaymentMethodRecord(UserPaymentMethod))
+                var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+                if (_userPaymentMethodService.AddUserPaymentMethodRecord(UserPaymentMethod, clientID))
                 {
                     return Ok("Payment method created successfully!");
                 }

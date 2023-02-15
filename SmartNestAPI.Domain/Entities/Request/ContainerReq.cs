@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SmartNestAPI.Domain.Entities.Request
 {
@@ -17,5 +18,10 @@ namespace SmartNestAPI.Domain.Entities.Request
         public bool Preorder { get; set; }
         public string PreorderText { get; set; } = null!;
         public Guid Id { get; set; } = Guid.NewGuid();
+        public string Photo { get; set; } = null!;
+        public string RefId { get; set; } = null!;
+        public Guid? ProductId { get; set; }
+        [Range(1, 100, ErrorMessage = "Current level value must be between 1 and 100.")]
+        public int CurrentLevel { get; set; }
     }
 }

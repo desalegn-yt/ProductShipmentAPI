@@ -20,10 +20,15 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public bool AddContainerRuleRecord(ContainerRuleReq containerRule)
+        public bool AddContainerRuleRecord(ContainerRuleReq containerRule, string clientID)
         {
             try
             {
+                //make sure productId is valid supplier product
+                //var supplierProduct = _context.SnSupplierProducts.FirstOrDefault(sp => sp.Id == containerRule.ProductId);
+                //if (supplierProduct == null) return false;
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientID).Select(a => a.Id).FirstOrDefault();
+                containerRule.UserId = userId;
                 _context.SnContainerRules.Add(_mapper.Map<SnContainerRule>(containerRule));
                 _context.SaveChanges();
                 return true;

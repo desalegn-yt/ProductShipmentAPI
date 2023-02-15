@@ -68,7 +68,7 @@ namespace SmartNestAPI.Application.Services
         {
             try
             {
-                if (categoryId == Guid.Empty)
+                if (categoryId == null)
                 {
                     return _mapper.Map<SupplierProductRes>(_context.SnSupplierProducts.FirstOrDefault(t => t.Id == id));
                 }

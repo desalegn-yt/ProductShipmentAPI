@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Net.Http.Headers;
 using SmartNestAPI.Application.Services;
 using SmartNestAPI.Domain.Entities.Database;
 using SmartNestAPI.Domain.Entities.Request;
@@ -24,7 +25,9 @@ namespace SmartNestAPI.Controllers
         [HttpGet]
         public IEnumerable<UserAddressRes> Get()
         {
-            return _userAddresservice.GetUserAddressRecords();
+            var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+
+            return _userAddresservice.GetUserAddressRecords(clientID);
         }
 
         [HttpPost]
@@ -32,7 +35,8 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_userAddresservice.AddUserAddressRecord(user))
+                var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+                if (_userAddresservice.AddUserAddressRecord(user, clientID))
                 {
                     return Ok("User address created successfully!");
                 }

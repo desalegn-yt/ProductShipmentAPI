@@ -20,10 +20,12 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public bool AddUserPaymentMethodRecord(UserPaymentMethodReq userPaymentMethod)
+        public bool AddUserPaymentMethodRecord(UserPaymentMethodReq userPaymentMethod, string clientID)
         {
             try
             {
+                var userId = _context.SnUsers.Where(u => u.AuthId == clientID).Select(a => a.Id).FirstOrDefault();
+                userPaymentMethod.UserId = userId;
                 _context.SnUserPaymentMethods.Add(_mapper.Map<SnUserPaymentMethod>(userPaymentMethod));
                 _context.SaveChanges();
                 //User can only have one default payment

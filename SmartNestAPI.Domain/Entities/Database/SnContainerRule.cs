@@ -12,7 +12,6 @@ namespace SmartNestAPI.Domain.Entities.Database
         public Guid ProductId { get; set; }
         public int? ContentLevel { get; set; }
         public int? ExpiryInDays { get; set; }
-        public Guid? NotificationId { get; set; }
         public string MetricTypes { get; set; } = null!;
     }
 }

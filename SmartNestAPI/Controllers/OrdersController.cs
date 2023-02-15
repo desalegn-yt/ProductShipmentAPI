@@ -36,7 +36,8 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_orderService.AddOrderRecord(order))
+                var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+                if (_orderService.AddOrderRecord(order, clientID))
                 {
                     return Ok("Order created successfully!");
                 }

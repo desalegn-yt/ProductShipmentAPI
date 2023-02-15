@@ -36,7 +36,8 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_shoppingListService.AddShoppingListRecord(shoppingList))
+                var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+                if (_shoppingListService.AddShoppingListRecord(shoppingList, clientID))
                 {
                     return Ok("ShoppingList created successfully!");
                 }

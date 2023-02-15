@@ -1,3 +1,4 @@
+using SmartNestAPI.Application.Core;
 using SmartNestAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,11 @@ builder.Services.ConfigureBasicServices();
 builder.Services.ConfigureBuiltinServices();
 
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+      .AddJsonOptions(options =>
+      {
+          options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
+      });
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();

@@ -4,6 +4,10 @@ using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
 using SmartNestAPI.Domain.Interfaces;
 using AutoMapper;
+using Stripe;
+using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using AutoMapper.Execution;
 
 namespace SmartNestAPI.Application.Services
 {
@@ -12,7 +16,6 @@ namespace SmartNestAPI.Application.Services
         private readonly PostgreSqlContext _context;
         private readonly IMapper _mapper;
         private readonly LogWriter _logWriter;
-
         public OrderService(PostgreSqlContext context, IMapper mapper, LogWriter logWriter)
         {
             _context = context;
@@ -20,10 +23,80 @@ namespace SmartNestAPI.Application.Services
             _logWriter = logWriter;
         }
 
-        public bool AddOrderRecord(OrderReq order)
+
+  
+        public Charge CreatePayment(string cardNuber, long amount, string email)
+        {
+            var chargeResult = new Stripe.Charge();
+            StripeConfiguration.SetApiKey("sk_test_51MZApDD1ztTIXwaVaa5o1sNJcp4TCzhnhTVp8xW1t72SKeDfJwWFqE6MX8kNd4GDLMnznZfztSUsjHQadYtxnskh00AQPTiSMx");
+            try
+            {
+                //Create Card Object to create Token 
+                var tokenOptions = new TokenCreateOptions
+                {
+                    Card = new TokenCardOptions
+                    {
+                        Number = cardNuber,
+                        ExpMonth = DateTime.Today.Month.ToString(),
+                        ExpYear = DateTime.Today.AddYears(2).Year.ToString(),
+                        Cvc = "314",
+                    },
+                };
+                var tokenService = new TokenService();
+                var tokenResult = tokenService.Create(tokenOptions);
+
+
+                //Create Customer Object and Register it on Stripe  
+                var customerOptions = new CustomerCreateOptions
+                {
+                    Email = email,
+                    Source = tokenResult.Id,
+                    Description = "Smartness customer created through API",
+                };
+                var customerService = new CustomerService();
+                var customerResult = customerService.Create(customerOptions);
+
+                //Create Charge Object with details of Charge 
+                var chargeOptions = new ChargeCreateOptions
+                {
+                    Amount = amount,
+                    Currency = "USD",
+                    ReceiptEmail = email,
+                    Customer = customerResult.Id,
+                    Description = "Smartness payment created through API", //Optional  
+                };
+                var chargeService = new ChargeService();
+                chargeResult = chargeService.Create(chargeOptions);
+
+            }
+            catch (StripeException e)
+            {
+                return null;
+            }
+
+            return chargeResult;
+        }
+
+
+        public bool AddOrderRecord(OrderReq order, string clientID)
         {
             try
             {
+                var user = _context.SnUsers.Where(u => u.AuthId == clientID).FirstOrDefault();
+                order.UserId = user.Id;
+                var paymentMethod = _context.SnUserPaymentMethods.FirstOrDefault(t => t.Id == order.PaymentMehtod);
+                if (paymentMethod == null) return false;
+                //Check product validity
+                var product = _context.SnProducts.FirstOrDefault(t => t.Id == order.ProductId);
+                if (product == null) return false;
+                var totalPrice = product.Price * order.Qty;
+                var chargeResult = CreatePayment(paymentMethod.CardToken, (long)totalPrice, user.Email);
+                if (chargeResult.Status == "succeeded")
+                {
+                    order.PaymentRef = chargeResult.Id;
+                    order.PaidAmount = chargeResult.AmountCaptured;
+                    order.Status = "Paid";
+                }else return false;
                 _context.SnOrders.Add(_mapper.Map<SnOrder>(order));
                 _context.SaveChanges();
                 return true;

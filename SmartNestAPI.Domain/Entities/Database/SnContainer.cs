@@ -17,5 +17,9 @@ namespace SmartNestAPI.Domain.Entities.Database
         public bool Preorder { get; set; }
         public string PreorderText { get; set; } = null!;
         public Guid Id { get; set; }
+        public string? Photo { get; set; }
+        public string? RefId { get; set; }
+        public Guid? ProductId { get; set; }
+        public int? CurrentLevel { get; set; }
     }
 }

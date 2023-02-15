@@ -49,13 +49,13 @@ namespace SmartNestAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ContainerRes Details(Guid id)
+        public ContainerDetailRes Details(Guid id)
         {
             return _containerService.GetContainerSingleRecord(id);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] ContainerReq container)
+        public IActionResult Edit([FromBody] ContainerUpdateReq container)
         {
             if (ModelState.IsValid)
             {

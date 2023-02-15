@@ -36,7 +36,8 @@ namespace SmartNestAPI.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (_containerRuleService.AddContainerRuleRecord(containerRule))
+                var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
+                if (_containerRuleService.AddContainerRuleRecord(containerRule, clientID))
                 {
                     return Ok("ContainerRule created successfully!");
                 }
