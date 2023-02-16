@@ -84,19 +84,35 @@ namespace SmartNestAPI.Application.Services
             {
                 var user = _context.SnUsers.Where(u => u.AuthId == clientID).FirstOrDefault();
                 order.UserId = user.Id;
+
+                if (string.IsNullOrEmpty(order.OrderType))return false;
+                if(order.OrderType.ToLower() == "supplier product" && order.ContainerId == null)return false;
+
                 var paymentMethod = _context.SnUserPaymentMethods.FirstOrDefault(t => t.Id == order.PaymentMehtod);
                 if (paymentMethod == null) return false;
-                //Check product validity
+
                 var product = _context.SnProducts.FirstOrDefault(t => t.Id == order.ProductId);
                 if (product == null) return false;
+
+                var address = _context.SnUserAddresses.FirstOrDefault(t => t.UserId == user.Id);
+                if (address == null)return false;
+               
                 var totalPrice = Math.Round((product.Price * order.Qty), 2);
                 var chargeResult = CreatePayment(paymentMethod.CardToken, totalPrice, user.Email);
+
                 if (chargeResult.Status == "succeeded")
                 {
                     order.PaymentRef = chargeResult.Id;
                     order.PaidAmount = chargeResult.AmountCaptured/100m;
                     order.Status = "Paid";
                 }else return false;
+                var snOrder = _mapper.Map<SnOrder>(order);
+                //copy address to order
+                snOrder.Address1 = address.Address1 ?? string.Empty;
+                snOrder.Address2 = address.Address2 ?? string.Empty;
+                snOrder.Suburb = address.Suburb ?? string.Empty;
+                snOrder.ContactNumber = address.ContactNumber ?? string.Empty;
+                snOrder.Postcode = address.Postcode ?? string.Empty;
                 _context.SnOrders.Add(_mapper.Map<SnOrder>(order));
                 _context.SaveChanges();
                 return true;

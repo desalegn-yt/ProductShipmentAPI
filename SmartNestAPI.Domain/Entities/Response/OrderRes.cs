@@ -18,5 +18,10 @@ namespace SmartNestAPI.Domain.Entities.Response
         public string? ContainerName { get; set; }
         public Guid Id { get; set; }
         public DateTime DateOrdered { get; set; }
+        public string? Address1 { get; set; }
+        public string? Address2 { get; set; }
+        public string? Suburb { get; set; }
+        public string? Postcode { get; set; }
+        public string? ContactNumber { get; set; }
     }
 }
