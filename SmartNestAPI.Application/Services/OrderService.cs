@@ -87,9 +87,15 @@ namespace SmartNestAPI.Application.Services
 
                 if (string.IsNullOrEmpty(order.OrderType))return false;
                 if(order.OrderType.ToLower() == "supplier product" && order.ContainerId == null)return false;
+                if (order.OrderType.ToLower() == "supplier product")
+                {
+                    var container = _context.SnContainers.FirstOrDefault(t => t.Id == order.ContainerId);
+                    if (container == null) return false;
+                    else order.ContainerName = container.Name;
+                }
 
                 var paymentMethod = _context.SnUserPaymentMethods.FirstOrDefault(t => t.Id == order.PaymentMehtod);
-                if (paymentMethod == null) return false;
+                if (paymentMethod == null || paymentMethod.UserId != user.Id) return false;
 
                 var product = _context.SnProducts.FirstOrDefault(t => t.Id == order.ProductId);
                 if (product == null) return false;
@@ -113,6 +119,7 @@ namespace SmartNestAPI.Application.Services
                 snOrder.Suburb = address.Suburb ?? string.Empty;
                 snOrder.ContactNumber = address.ContactNumber ?? string.Empty;
                 snOrder.Postcode = address.Postcode ?? string.Empty;
+                snOrder.ProductName = product.Name ?? string.Empty;
                 _context.SnOrders.Add(_mapper.Map<SnOrder>(order));
                 _context.SaveChanges();
                 return true;

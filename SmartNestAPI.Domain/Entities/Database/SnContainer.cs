@@ -5,6 +5,7 @@ namespace SmartNestAPI.Domain.Entities.Database
 {
     public partial class SnContainer
     {
+        public string Name { get; set; } = null!;
         public decimal Weight { get; set; }
         public decimal Capacity { get; set; }
         public decimal Price { get; set; }

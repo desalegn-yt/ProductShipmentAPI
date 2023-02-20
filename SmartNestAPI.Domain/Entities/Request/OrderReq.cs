@@ -12,7 +12,7 @@ namespace SmartNestAPI.Domain.Entities.Request
         public Guid ProductId { get; set; }
         public string Status { get; set; } = "Unpaid";
         public Guid UserId { get; set; } = Guid.NewGuid();
-        public string ProductName { get; set; } = null!;
+        public string ProductName { get; set; } = "Place-Holder";
         public string OrderType { get; set; } = null!;
         public Guid? ContainerId { get; set; }
         public string? ContainerName { get; set; }

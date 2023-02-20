@@ -6,6 +6,7 @@ namespace SmartNestAPI.Domain.Entities.Request
 {
     public partial class ContainerReq
     {
+        public string Name { get; set; } = null!;
         public decimal Weight { get; set; }
         public decimal Capacity { get; set; }
         public decimal Price { get; set; }
