@@ -57,7 +57,7 @@ namespace SmartNestAPI.Application.Services
             {
                 var users = _mapper.Map<UserRes>(_context.SnUsers.FirstOrDefault(a => a.AuthId == clientId));
                 users.AddressesCount = _context.SnUserAddresses.Count(a => a.UserId == users.Id);
-                users.ContainersCount = _context.SnUserContainers.Count(a => a.UserId == users.Id);
+                //users.ContainersCount = _context.SnUserContainers.Count(a => a.UserId == users.Id);
                 users.PaymentMethodsCount = _context.SnUserPaymentMethods.Count(a => a.UserId == users.Id);
                 return users;
             }

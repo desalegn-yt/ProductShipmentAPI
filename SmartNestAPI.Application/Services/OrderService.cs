@@ -78,30 +78,30 @@ namespace SmartNestAPI.Application.Services
         }
 
 
-        public bool AddOrderRecord(OrderReq order, string clientID)
+        public string AddOrderRecord(OrderReq order, string clientID)
         {
             try
             {
                 var user = _context.SnUsers.Where(u => u.AuthId == clientID).FirstOrDefault();
                 order.UserId = user.Id;
 
-                if (string.IsNullOrEmpty(order.OrderType))return false;
-                if(order.OrderType.ToLower() == "supplier product" && order.ContainerId == null)return false;
+                if (string.IsNullOrEmpty(order.OrderType))return "Error:- Order type can not be null.";
+                if(order.OrderType.ToLower() == "supplier product" && order.ContainerId == null)return "Error:- ContainerId can not be null for supplier product order types.";
                 if (order.OrderType.ToLower() == "supplier product")
                 {
                     var container = _context.SnContainers.FirstOrDefault(t => t.Id == order.ContainerId);
-                    if (container == null) return false;
+                    if (container == null) return "Error:- Please use a valid containerId.";
                     else order.ContainerName = container.Name;
                 }
 
                 var paymentMethod = _context.SnUserPaymentMethods.FirstOrDefault(t => t.Id == order.PaymentMehtod);
-                if (paymentMethod == null || paymentMethod.UserId != user.Id) return false;
+                if (paymentMethod == null || paymentMethod.UserId != user.Id) return "Error:- Please use a valid payment method.";
 
                 var product = _context.SnProducts.FirstOrDefault(t => t.Id == order.ProductId);
-                if (product == null) return false;
+                if (product == null) return "Error:- Please use a valid productId.";
 
                 var address = _context.SnUserAddresses.FirstOrDefault(t => t.UserId == user.Id);
-                if (address == null)return false;
+                if (address == null)return "Error:- The user does not have an address.";
                
                 var totalPrice = Math.Round((product.Price * order.Qty), 2);
                 var chargeResult = CreatePayment(paymentMethod.CardToken, totalPrice, user.Email);
@@ -111,7 +111,7 @@ namespace SmartNestAPI.Application.Services
                     order.PaymentRef = chargeResult.Id;
                     order.PaidAmount = chargeResult.AmountCaptured/100m;
                     order.Status = "Paid";
-                }else return false;
+                }else return "Error:- Unable to create a payment with the given details.";
                 var snOrder = _mapper.Map<SnOrder>(order);
                 //copy address to order
                 snOrder.Address1 = address.Address1 ?? string.Empty;
@@ -120,14 +120,14 @@ namespace SmartNestAPI.Application.Services
                 snOrder.ContactNumber = address.ContactNumber ?? string.Empty;
                 snOrder.Postcode = address.Postcode ?? string.Empty;
                 snOrder.ProductName = product.Name ?? string.Empty;
-                _context.SnOrders.Add(_mapper.Map<SnOrder>(order));
+                _context.SnOrders.Add(snOrder);
                 _context.SaveChanges();
-                return true;
+                return "Order created successfully!";
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while adding order. Error:- " + ex.Message);
-                return false;
+                return "Error:- Unable to create a payment with the given details.";
             }
         }
 

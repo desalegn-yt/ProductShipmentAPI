@@ -4,6 +4,7 @@ using SmartNestAPI.Domain.Entities.Request;
 using SmartNestAPI.Domain.Entities.Response;
 using SmartNestAPI.Domain.Interfaces;
 using AutoMapper;
+using System.ComponentModel;
 
 namespace SmartNestAPI.Application.Services
 {
@@ -58,7 +59,7 @@ namespace SmartNestAPI.Application.Services
             try
             {
                 var userId = _context.SnUsers.Where(u => u.AuthId == clientId).Select(a => a.Id).FirstOrDefault();
-                return _mapper.Map<List<UserContainerRes>>(_context.SnUserContainers.Where(u => u.UserId == userId).ToList());
+                return _mapper.Map<List<UserContainerRes>>(_context.SnUserContainers.Where(t => t.UserId == userId).ToList());
             }
             catch (Exception ex)
             {
@@ -67,17 +68,20 @@ namespace SmartNestAPI.Application.Services
             return new List<UserContainerRes>();
         }
 
-        public UserContainerRes GetUserContainerSingleRecord(Guid id)
+        public UserContainerDetailRes GetUserContainerSingleRecord(Guid id)
         {
             try
             {
-                return _mapper.Map<UserContainerRes>(_context.SnUserContainers.FirstOrDefault(t => t.Id == id));
+                var userContainer = _mapper.Map<UserContainerDetailRes>(_context.SnUserContainers.FirstOrDefault(t => t.Id == id));
+                userContainer.ContainerRules = _mapper.Map<List<ContainerRuleRes>>(_context.SnContainerRules.Where(t => t.ContainerId == id)).ToArray();
+                userContainer.ContainerLogs = _mapper.Map<List<ContainerLogRes>>(_context.SnContainerLogs.Where(t => t.ContainerId == id).OrderByDescending(t => t.DateTimeStamp).Take(10)).ToArray();
+                return userContainer;
             }
             catch (Exception ex)
             {
-                _logWriter.WriteLog("Error occured while retrieving UserContainers. Error:- " + ex.Message);
+                _logWriter.WriteLog("Error occured while retrieving userContainers. Error:- " + ex.Message);
             }
-            return new UserContainerRes();
+            return new UserContainerDetailRes();
         }
 
         public bool UpdateUserContainerRecord(UserContainerReq userContainer)
@@ -88,6 +92,10 @@ namespace SmartNestAPI.Application.Services
                 if (userContainerResult != null)
                 {
                     userContainerResult.Name = userContainer.Name;
+                    userContainerResult.ProductId = userContainer.ProductId;
+                    userContainerResult.CurrentLevel = userContainer.CurrentLevel;
+                    userContainerResult.Photo = userContainer.Photo;
+                    userContainerResult.CurrentLevel = userContainer.CurrentLevel;
                     _context.Update(userContainerResult);
                     _context.SaveChanges();
                     return true;
@@ -100,9 +108,5 @@ namespace SmartNestAPI.Application.Services
             }
         }
 
-        public void UpdateUserContainerRecord(ContainerReq container)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

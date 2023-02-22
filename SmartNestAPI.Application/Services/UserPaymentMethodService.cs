@@ -32,12 +32,15 @@ namespace SmartNestAPI.Application.Services
                 if (userPaymentMethod.Default.Value)
                 {
                     var userPaymentResult = _context.SnUserPaymentMethods.Where(u => u.Id != userPaymentMethod.Id && u.UserId == userPaymentMethod.UserId &&
-                                                                                  u.Default == true).FirstOrDefault();
+                                                                                  u.Default == true).ToList();
                     if (userPaymentResult != null)
                     {
-                        userPaymentResult.Default = false;
-                        _context.Update(userPaymentResult);
+                        foreach(var userPayment in userPaymentResult)
+                        {
+                         userPayment.Default = false;
+                        _context.Update(userPayment);
                         _context.SaveChanges();
+                        }
                     }
                 }
                 return true;
@@ -104,13 +107,16 @@ namespace SmartNestAPI.Application.Services
                     _context.SaveChanges();
 
                     //User can only have one default payment
-                    userPaymentResult = _context.SnUserPaymentMethods.Where(u => u.Id != userPaymentMethod.Id && u.UserId == userPaymentMethod.UserId &&
-                                                                                  u.Default == true).FirstOrDefault();
-                    if (userPaymentResult != null)
+                    var userPaymentList = _context.SnUserPaymentMethods.Where(u => u.Id != userPaymentResult.Id && u.UserId == userPaymentResult.UserId &&
+                                                                                  u.Default == true).ToList();
+                    if (userPaymentList != null)
                     {
-                        userPaymentResult.Default = false;
-                        _context.Update(userPaymentResult);
-                        _context.SaveChanges();
+                        foreach (var userPayment in userPaymentList)
+                        {
+                            userPayment.Default = false;
+                            _context.Update(userPayment);
+                            _context.SaveChanges();
+                        }
                     }
                         return true;
                 }

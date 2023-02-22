@@ -37,14 +37,14 @@ namespace SmartNestAPI.Controllers
             if (ModelState.IsValid)
             {
                 var clientID = Request.Headers[HeaderNames.Authorization].ToString().Split(" ")[1].Split(".")[0];
-                if (_orderService.AddOrderRecord(order, clientID))
+                var result = _orderService.AddOrderRecord(order, clientID);
+                if (result.Contains("Error:-"))
                 {
-                    return Ok("Order created successfully!");
+                    return StatusCode(StatusCodes.Status500InternalServerError, result);
                 }
                 else
                 {
-                    return StatusCode(StatusCodes.Status500InternalServerError, "Error occured while creating order!");
-
+                    return Ok(result);
                 }
             }
             else

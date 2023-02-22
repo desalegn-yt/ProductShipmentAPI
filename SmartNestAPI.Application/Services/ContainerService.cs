@@ -64,20 +64,17 @@ namespace SmartNestAPI.Application.Services
             return new List<ContainerRes>();
         }
 
-        public ContainerDetailRes GetContainerSingleRecord(Guid id)
+        public ContainerRes GetContainerSingleRecord(Guid id)
         {
             try
             {
-                var container =  _mapper.Map<ContainerDetailRes>(_context.SnContainers.FirstOrDefault(t => t.Id == id));
-                container.ContainerRules = _mapper.Map<List<ContainerRuleRes>>(_context.SnContainerRules.Where(t => t.ContainerId == id)).ToArray();
-                container.ContainerLogs = _mapper.Map<List<ContainerLogRes>>(_context.SnContainerLogs.Where(t => t.ContainerId == id).OrderByDescending(t => t.DateTimeStamp).Take(10)).ToArray();
-                return container;
+                return _mapper.Map<ContainerRes>(_context.SnContainers.FirstOrDefault(t => t.Id == id));
             }
             catch (Exception ex)
             {
                 _logWriter.WriteLog("Error occured while retrieving Containers. Error:- " + ex.Message);
             }
-            return new ContainerDetailRes();
+            return new ContainerRes();
         }
 
         public bool UpdateContainerRecord(ContainerUpdateReq container)
@@ -87,9 +84,7 @@ namespace SmartNestAPI.Application.Services
                 var containerResult = _context.SnContainers.Where(u => u.Id == container.Id).FirstOrDefault();
                 if (containerResult != null)
                 {
-                    containerResult.ProductId = container.ProductId;
-                    containerResult.CurrentLevel = container.CurrentLevel;
-                    containerResult.Photo = container.Photo;
+                    containerResult.Name = container.Name;
                     containerResult.Description = container.Description;
                     _context.Update(containerResult);
                     _context.SaveChanges();

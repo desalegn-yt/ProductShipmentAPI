@@ -49,7 +49,7 @@ namespace SmartNestAPI.Controllers
         //}
 
         [HttpGet("{id}")]
-        public ContainerDetailRes Details(Guid id)
+        public ContainerRes Details(Guid id)
         {
             return _containerService.GetContainerSingleRecord(id);
         }

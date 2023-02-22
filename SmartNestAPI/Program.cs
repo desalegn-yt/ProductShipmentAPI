@@ -14,6 +14,7 @@ builder.Services.AddControllers()
           options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
       });
 builder.Services.AddEndpointsApiExplorer();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var app = builder.Build();
 
