@@ -8,6 +8,8 @@ using Stripe;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using AutoMapper.Execution;
+using Microsoft.Extensions.Configuration;
+using System.Text;
 
 namespace SmartNestAPI.Application.Services
 {
@@ -16,6 +18,7 @@ namespace SmartNestAPI.Application.Services
         private readonly PostgreSqlContext _context;
         private readonly IMapper _mapper;
         private readonly LogWriter _logWriter;
+        private static Random RNG = new Random();
         public OrderService(PostgreSqlContext context, IMapper mapper, LogWriter logWriter)
         {
             _context = context;
@@ -24,11 +27,21 @@ namespace SmartNestAPI.Application.Services
         }
 
 
-  
-        public Charge CreatePayment(string cardNuber, double amount, string email)
+        public string CreateCardNumber()
+        {
+            var builder = new StringBuilder();
+            while (builder.Length < 16)
+            {
+                builder.Append(RNG.Next(10).ToString());
+            }
+            return builder.ToString();
+        }
+        public Charge CreatePayment(double amount, string email)
         {
             var chargeResult = new Stripe.Charge();
-            StripeConfiguration.SetApiKey("sk_test_51MZApDD1ztTIXwaVaa5o1sNJcp4TCzhnhTVp8xW1t72SKeDfJwWFqE6MX8kNd4GDLMnznZfztSUsjHQadYtxnskh00AQPTiSMx");
+            var MyConfig = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            string stripeApiKey = MyConfig.GetSection("Payment:StripeApiKey").Value;
+            StripeConfiguration.SetApiKey(stripeApiKey);
             try
             {
                 //Create Card Object to create Token 
@@ -36,7 +49,7 @@ namespace SmartNestAPI.Application.Services
                 {
                     Card = new TokenCardOptions
                     {
-                        Number = cardNuber,
+                        Number = CreateCardNumber(),
                         ExpMonth = DateTime.Today.Month.ToString(),
                         ExpYear = DateTime.Today.AddYears(2).Year.ToString(),
                         Cvc = "314",
@@ -84,6 +97,7 @@ namespace SmartNestAPI.Application.Services
             {
                 var user = _context.SnUsers.Where(u => u.AuthId == clientID).FirstOrDefault();
                 order.UserId = user.Id;
+                var totalPrice = 0.0;
 
                 if (string.IsNullOrEmpty(order.OrderType))return "Error:- Order type can not be null.";
                 if(order.OrderType.ToLower() == "supplier product" && order.ContainerId == null)return "Error:- ContainerId can not be null for supplier product order types.";
@@ -91,20 +105,24 @@ namespace SmartNestAPI.Application.Services
                 {
                     var container = _context.SnContainers.FirstOrDefault(t => t.Id == order.ContainerId);
                     if (container == null) return "Error:- Please use a valid containerId.";
-                    else order.ContainerName = container.Name;
+                    order.ContainerName = container.Name ?? string.Empty;
+                    totalPrice = Math.Round(((double)container.Price * order.Qty), 2);
+                }
+                else
+                {
+                    var product = _context.SnProducts.FirstOrDefault(t => t.Id == order.ProductId);
+                    if (product == null) return "Error:- Please use a valid productId.";
+                    order.ProductName = product.Name ?? string.Empty;
+                    totalPrice = Math.Round((product.Price * order.Qty), 2);
                 }
 
-                var paymentMethod = _context.SnUserPaymentMethods.FirstOrDefault(t => t.Id == order.PaymentMehtod);
-                if (paymentMethod == null || paymentMethod.UserId != user.Id) return "Error:- Please use a valid payment method.";
-
-                var product = _context.SnProducts.FirstOrDefault(t => t.Id == order.ProductId);
-                if (product == null) return "Error:- Please use a valid productId.";
+                var paymentMethod = _context.SnUserPaymentMethods.FirstOrDefault(t => t.UserId == user.Id && t.Default.Value);
+                if (paymentMethod == null || paymentMethod.UserId != user.Id) return "Error:- The user does not have a default payment method. Please create a defaoult payment method and try again!.";            
 
                 var address = _context.SnUserAddresses.FirstOrDefault(t => t.UserId == user.Id);
                 if (address == null)return "Error:- The user does not have an address.";
-               
-                var totalPrice = Math.Round((product.Price * order.Qty), 2);
-                var chargeResult = CreatePayment(paymentMethod.CardToken, totalPrice, user.Email);
+
+                var chargeResult = CreatePayment(totalPrice, user.Email);
 
                 if (chargeResult.Status == "succeeded")
                 {
@@ -119,7 +137,6 @@ namespace SmartNestAPI.Application.Services
                 snOrder.Suburb = address.Suburb ?? string.Empty;
                 snOrder.ContactNumber = address.ContactNumber ?? string.Empty;
                 snOrder.Postcode = address.Postcode ?? string.Empty;
-                snOrder.ProductName = product.Name ?? string.Empty;
                 _context.SnOrders.Add(snOrder);
                 _context.SaveChanges();
                 return "Order created successfully!";
