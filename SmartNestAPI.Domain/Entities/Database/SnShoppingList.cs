@@ -14,5 +14,7 @@ namespace SmartNestAPI.Domain.Entities.Database
         public string? UserContainerPhoto { get; set; }
         public DateOnly? DateCreated { get; set; }
         public Guid UserId { get; set; }
+        public double? ProductPrice { get; set; }
+        public string? ProductName { get; set; }
     }
 }

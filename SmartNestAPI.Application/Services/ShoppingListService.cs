@@ -26,6 +26,12 @@ namespace SmartNestAPI.Application.Services
             {
                 var userId = _context.SnUsers.Where(u => u.AuthId == clientID).Select(a => a.Id).FirstOrDefault();
                 shoppingList.UserId = userId;
+                var product = _context.SnProducts.FirstOrDefault(p => p.Id == shoppingList.ProductId);
+                if(product != null)
+                {
+                    shoppingList.ProductPrice = product.Price;
+                    shoppingList.ProductName = product.Name;
+                }
                 _context.SnShoppingLists.Add(_mapper.Map<SnShoppingList>(shoppingList));
                 _context.SaveChanges();
                 return true;

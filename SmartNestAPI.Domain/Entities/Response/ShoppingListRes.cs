@@ -13,5 +13,9 @@ namespace SmartNestAPI.Domain.Entities.Response
         public string? UserContainerName { get; set; }
         public string? UserContainerPhoto { get; set; }
         public DateOnly? DateCreated { get; set; }
+        public double ProductPrice { get; set; }
+        public string?  ProductName { get; set; }
+
+
     }
 }
