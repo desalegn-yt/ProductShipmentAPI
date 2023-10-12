@@ -25,7 +25,7 @@ string clientSecret = MyConfig.GetSection("Authentication:ClientSecret").Value;
 app.UseSwagger();
 app.UseSwaggerUI(settings =>
 {
-    settings.SwaggerEndpoint("/swagger/v1/swagger.json", "SmartNest API Documentation");
+    settings.SwaggerEndpoint("/swagger/v1/swagger.json", "Product Shipment API Documentation");
     settings.OAuthClientId(clientID);
     settings.OAuthClientSecret(clientSecret);
     settings.OAuthUsePkce();

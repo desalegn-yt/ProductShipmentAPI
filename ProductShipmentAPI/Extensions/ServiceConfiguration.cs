@@ -23,7 +23,7 @@ namespace ProductShipmentAPI.Extensions
             {
                 options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
                 {
-                    Title = "SmartNest API Documentation",
+                    Title = "ProductShipmentAPI API Documentation",
                     Version = "v1.0",
                     Description = ""
                 });
