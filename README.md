@@ -18,7 +18,7 @@ Features:
 
 Usage:
 
-Clone the repository: git clone https://github.com/desalegn-yt/product-shipment-api.git
+Clone the repository: git clone https://github.com/desalegn-yt/ProductShipmentAPI.git
 
 Install dependencies: dotnet restore
 
@@ -32,7 +32,7 @@ Build and run the API: dotnet run
 
 API Documentation:
 
-The API documentation is provided using Swagger, which offers a user-friendly interface to explore the available endpoints, input parameters, and expected responses. After running the API, navigate to http://localhost:<port>/swagger to access the Swagger documentation.
+The API documentation is provided using Swagger, which offers a user-friendly interface to explore the available endpoints, input parameters, and expected responses. After running the API, navigate to http://localhost:7224/swagger to access the Swagger documentation.
 
 Contributing:
 
