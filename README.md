@@ -18,7 +18,7 @@ Features:
 
 Usage:
 
-Clone the repository: git clone https://github.com/your-username/product-shipment-api.git
+Clone the repository: git clone https://github.com/desalegn-yt/product-shipment-api.git
 
 Install dependencies: dotnet restore
 
