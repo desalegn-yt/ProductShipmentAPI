@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SmartNestAPI.Infrastructure\SmartNestAPI.Infrastructure.csproj" />
+    <ProjectReference Include="..\SmartNestAPI.Infrastructure\ProductShipmentAPI.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
