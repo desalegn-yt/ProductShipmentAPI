@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI", "SmartNestAPI\ProductShipmentAPI.csproj", "{9411D6FB-EFD9-4460-90C4-526497674064}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI", "ProductShipmentAPI\ProductShipmentAPI.csproj", "{9411D6FB-EFD9-4460-90C4-526497674064}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI.Domain", "SmartNestAPI.Domain\ProductShipmentAPI.Domain.csproj", "{E1B5A5CA-290C-466A-99FA-C202C3E3FE17}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI.Domain", "ProductShipmentAPI.Domain\ProductShipmentAPI.Domain.csproj", "{E1B5A5CA-290C-466A-99FA-C202C3E3FE17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI.Application", "SmartNestAPI.Application\ProductShipmentAPI.Application.csproj", "{74F0D2DF-796D-476F-81E6-B35A4F1D5379}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI.Application", "ProductShipmentAPI.Application\ProductShipmentAPI.Application.csproj", "{74F0D2DF-796D-476F-81E6-B35A4F1D5379}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI.Infrastructure", "SmartNestAPI.Infrastructure\ProductShipmentAPI.Infrastructure.csproj", "{3735F464-5C10-445B-9929-F1BFEE4DA789}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProductShipmentAPI.Infrastructure", "ProductShipmentAPI.Infrastructure\ProductShipmentAPI.Infrastructure.csproj", "{3735F464-5C10-445B-9929-F1BFEE4DA789}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
